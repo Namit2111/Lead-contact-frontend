@@ -16,7 +16,7 @@ function Callback() {
     }
     hasCalledCallback.current = true
     console.log('First callback call, proceeding...')
-    
+
     handleCallback()
   }, [])
 
@@ -35,7 +35,7 @@ function Callback() {
       console.log('Calling backend callback API...')
       const response = await fetch(`/api/oauth/callback/${provider}?code=${code}`)
       const data = await response.json()
-      
+
       console.log('Response status:', response.status)
       console.log('Response data:', data)
 
@@ -46,12 +46,12 @@ function Callback() {
           return
         }
         hasNavigated.current = true
-        
+
         console.log('Connection successful! Data:', data)
         console.log('Navigating to /success with state')
-        
+
         // Pass data via router state (more reliable than sessionStorage)
-        navigate('/success', { 
+        navigate('/dashboard', {
           replace: true,
           state: { connectionData: data }
         })

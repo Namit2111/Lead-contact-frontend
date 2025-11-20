@@ -1,0 +1,132 @@
+.contacts-table-container {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #e5e5e5;
+}
+
+.contacts-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.contacts-table thead {
+    background: #000000;
+    color: #ffffff;
+}
+
+.contacts-table th {
+    padding: 16px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.contacts-table th.sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.contacts-table th.sortable:hover {
+    background-color: #171717;
+}
+
+.sort-icon {
+    margin-left: 6px;
+    opacity: 0.6;
+    font-size: 12px;
+}
+
+.sort-icon.active {
+    opacity: 1;
+    font-weight: bold;
+}
+
+.contacts-table tbody tr {
+    border-bottom: 1px solid #e5e5e5;
+    transition: background-color 0.2s;
+}
+
+.contacts-table tbody tr:hover {
+    background-color: #fafafa;
+}
+
+.contacts-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.contacts-table td {
+    padding: 14px 12px;
+    color: #171717;
+}
+
+.email-cell {
+    font-weight: 500;
+    color: #000000;
+}
+
+.date-cell {
+    color: #737373;
+    font-size: 13px;
+}
+
+.source-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #000000;
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.delete-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    color: #737373;
+    font-weight: 500;
+}
+
+.delete-btn:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.delete-btn:active {
+    transform: scale(0.95);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .contacts-table {
+        font-size: 12px;
+    }
+
+    .contacts-table th,
+    .contacts-table td {
+        padding: 10px 8px;
+    }
+
+    .contacts-table th {
+        font-size: 11px;
+    }
+}
+
+/* Empty state */
+.contacts-table tbody tr.empty-row td {
+    text-align: center;
+    padding: 40px;
+    color: #737373;
+    font-style: italic;
+}

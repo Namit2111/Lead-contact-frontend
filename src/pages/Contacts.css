@@ -1,0 +1,205 @@
+.contacts-page-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.contacts-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.contacts-page-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #000000;
+  letter-spacing: -0.5px;
+}
+
+.contacts-page-subtitle {
+  margin: 0;
+  color: #737373;
+  font-size: 0.95rem;
+}
+
+.back-button {
+  padding: 0.625rem 1.25rem;
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.back-button:hover {
+  background: #fafafa;
+  border-color: #d4d4d4;
+}
+
+.contacts-page-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
+  gap: 1rem;
+}
+
+.contacts-page-loading p {
+  margin: 0;
+  color: #737373;
+}
+
+.contacts-page-error {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  color: #000000;
+}
+
+.contacts-page-empty {
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.contacts-page-empty h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #000000;
+}
+
+.contacts-page-empty p {
+  margin: 0 0 1.5rem 0;
+  color: #737373;
+}
+
+.empty-action-button {
+  padding: 0.75rem 1.5rem;
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #000000;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.empty-action-button:hover {
+  background: #171717;
+  border-color: #171717;
+}
+
+.csv-uploads-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.csv-upload-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.csv-upload-card:hover {
+  border-color: #000000;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+.csv-card-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.csv-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.csv-card-title {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000000;
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+.csv-card-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.csv-card-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.stat-label {
+  color: #737373;
+  font-weight: 500;
+}
+
+.stat-value {
+  color: #000000;
+}
+
+.csv-card-arrow {
+  font-size: 1.25rem;
+  color: #a3a3a3;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.csv-upload-card:hover .csv-card-arrow {
+  transform: translateX(4px);
+  color: #000000;
+}
+
+@media (max-width: 768px) {
+  .contacts-page-header {
+    flex-direction: column;
+  }
+
+  .back-button {
+    align-self: flex-start;
+  }
+
+  .csv-uploads-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contacts-page-title {
+    font-size: 1.5rem;
+  }
+}
+

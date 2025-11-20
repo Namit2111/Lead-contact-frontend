@@ -23,7 +23,7 @@ function CsvUpload({ userId, onUploadComplete }) {
     e.preventDefault()
     e.stopPropagation()
     setDragActive(false)
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       handleFileSelect(e.dataTransfer.files[0])
     }
@@ -32,20 +32,20 @@ function CsvUpload({ userId, onUploadComplete }) {
   const handleFileSelect = (selectedFile) => {
     setError(null)
     setUploadResult(null)
-    
+
     // Validate file type
     const fileName = selectedFile.name.toLowerCase()
     if (!fileName.endsWith('.csv') && !fileName.endsWith('.txt')) {
       setError('Please select a CSV file (.csv or .txt)')
       return
     }
-    
+
     // Validate file size (5MB)
     if (selectedFile.size > 5 * 1024 * 1024) {
       setError('File size must be less than 5MB')
       return
     }
-    
+
     setFile(selectedFile)
   }
 
@@ -85,7 +85,7 @@ function CsvUpload({ userId, onUploadComplete }) {
         if (fileInputRef.current) {
           fileInputRef.current.value = ''
         }
-        
+
         // Notify parent component
         if (onUploadComplete) {
           onUploadComplete(data)
@@ -124,10 +124,9 @@ function CsvUpload({ userId, onUploadComplete }) {
           onChange={handleFileInputChange}
           style={{ display: 'none' }}
         />
-        
+
         {file ? (
           <div className="csv-file-info">
-            <div className="csv-file-icon">📄</div>
             <div className="csv-file-name">{file.name}</div>
             <div className="csv-file-size">
               {(file.size / 1024).toFixed(2)} KB
@@ -135,7 +134,6 @@ function CsvUpload({ userId, onUploadComplete }) {
           </div>
         ) : (
           <div className="csv-dropzone-content">
-            <div className="csv-upload-icon">📤</div>
             <p className="csv-dropzone-text">
               Drag and drop your CSV file here
             </p>
@@ -168,7 +166,7 @@ function CsvUpload({ userId, onUploadComplete }) {
       {/* Error message */}
       {error && (
         <div className="csv-message csv-error">
-          <span className="csv-message-icon">⚠️</span>
+          <span className="csv-message-icon">!</span>
           {error}
         </div>
       )}
@@ -211,4 +209,3 @@ jane@example.com,Jane Smith,Tech Corp,+1234567891`}</pre>
 }
 
 export default CsvUpload
-

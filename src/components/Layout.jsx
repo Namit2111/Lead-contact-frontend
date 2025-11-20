@@ -1,0 +1,50 @@
+import { Link, Outlet, useLocation } from 'react-router-dom'
+import './Layout.css'
+
+function Layout() {
+    const location = useLocation()
+
+    const isActive = (path) => {
+        return location.pathname === path ? 'active' : ''
+    }
+
+    return (
+        <div className="layout">
+            <aside className="sidebar">
+                <div className="sidebar-header">
+                    <h2>Lead Contact</h2>
+                </div>
+                <nav className="sidebar-nav">
+                    <Link to="/dashboard" className={`nav-item ${isActive('/dashboard')}`}>
+                        Dashboard
+                    </Link>
+                    <Link to="/contacts" className={`nav-item ${isActive('/contacts')}`}>
+                        Contacts
+                    </Link>
+                    <Link to="/templates" className={`nav-item ${isActive('/templates')}`}>
+                        Templates
+                    </Link>
+                    <Link to="/send" className={`nav-item ${isActive('/send')}`}>
+                        Send Emails
+                    </Link>
+                    <Link to="/logs" className={`nav-item ${isActive('/logs')}`}>
+                        Logs
+                    </Link>
+                    <Link to="/settings" className={`nav-item ${isActive('/settings')}`}>
+                        Settings
+                    </Link>
+                </nav>
+                <div className="sidebar-footer">
+                    <Link to="/" className="nav-item logout">
+                        Logout
+                    </Link>
+                </div>
+            </aside>
+            <main className="main-content">
+                <Outlet />
+            </main>
+        </div>
+    )
+}
+
+export default Layout
