@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import CsvUpload from '../components/CsvUpload'
 
 function Dashboard() {
     const location = useLocation()
@@ -53,8 +52,8 @@ function Dashboard() {
                 if (statsResponse.ok) {
                     const statsData = await statsResponse.json()
                     const uploadsCount = Object.keys(statsData.sources || {}).length
-                    setStats(prev => ({ 
-                        ...prev, 
+                    setStats(prev => ({
+                        ...prev,
                         total_contacts: statsData.total_contacts,
                         csv_uploads: uploadsCount
                     }))
@@ -98,29 +97,6 @@ function Dashboard() {
                     </div>
                 </div>
             </div>
-
-            {/* CSV Upload Section */}
-            {user?.id && (
-                <div className="card" style={{ marginTop: '24px' }}>
-                    <CsvUpload 
-                        userId={user.id}
-                        onUploadComplete={() => fetchStats()}
-                    />
-                </div>
-            )}
-
-            {/* View CSV Uploads Button */}
-            {stats.csv_uploads > 0 && (
-                <div className="card" style={{ marginTop: '24px', textAlign: 'center', padding: '24px' }}>
-                    <button
-                        className="pagination-btn"
-                        onClick={() => navigate('/contacts', { state: { userData: user } })}
-                        style={{ padding: '12px 32px', fontSize: '1rem' }}
-                    >
-                        View All CSV Uploads ({stats.csv_uploads}) →
-                    </button>
-                </div>
-            )}
         </div>
     )
 }

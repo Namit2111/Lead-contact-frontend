@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import CsvUpload from '../components/CsvUpload'
 import ContactModal from '../components/ContactModal'
 import './Contacts.css'
 
@@ -7,17 +8,20 @@ function Contacts() {
   const navigate = useNavigate()
   const location = useLocation()
   const [csvUploads, setCsvUploads] = useState([])
+  const [filteredUploads, setFilteredUploads] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [selectedCsv, setSelectedCsv] = useState(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const [userId, setUserId] = useState(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [showUploadModal, setShowUploadModal] = useState(false)
+  const [selectedCsv, setSelectedCsv] = useState(null)
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
 
   useEffect(() => {
     // Get user ID from location state or localStorage
     const userData = location.state?.userData
     const savedUser = localStorage.getItem('user')
-    
+
     if (userData?.id) {
       setUserId(userData.id)
       loadCsvUploads(userData.id)
@@ -30,6 +34,18 @@ function Contacts() {
       navigate('/')
     }
   }, [navigate, location])
+
+  useEffect(() => {
+    // Filter uploads based on search query
+    if (searchQuery.trim() === '') {
+      setFilteredUploads(csvUploads)
+    } else {
+      const filtered = csvUploads.filter(upload =>
+        upload.source.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      setFilteredUploads(filtered)
+    }
+  }, [searchQuery, csvUploads])
 
   const loadCsvUploads = async (uid) => {
     setLoading(true)
@@ -45,6 +61,7 @@ function Contacts() {
       if (response.ok) {
         const data = await response.json()
         setCsvUploads(data.uploads)
+        setFilteredUploads(data.uploads)
       } else {
         setError('Failed to load CSV uploads')
       }
@@ -56,13 +73,20 @@ function Contacts() {
     }
   }
 
-  const handleCsvClick = (csvSource) => {
-    setSelectedCsv(csvSource)
-    setIsModalOpen(true)
+  const handleUploadComplete = () => {
+    setShowUploadModal(false)
+    if (userId) {
+      loadCsvUploads(userId)
+    }
   }
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
+  const handleViewContacts = (csvSource) => {
+    setSelectedCsv(csvSource)
+    setIsContactModalOpen(true)
+  }
+
+  const handleCloseContactModal = () => {
+    setIsContactModalOpen(false)
     setSelectedCsv(null)
   }
 
@@ -78,92 +102,133 @@ function Contacts() {
   }
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>Lead Contact</h1>
-        <p>Email Campaign Management Platform</p>
-      </header>
+    <div className="contacts-page">
+      <div className="page-header">
+        <h1 className="page-title">CSV Uploads</h1>
+        <p className="page-subtitle">Manage your uploaded contact files</p>
+      </div>
 
-      <main className="app-content">
-        <div className="contacts-page-container">
-          <div className="contacts-page-header">
-            <div>
-              <h2 className="contacts-page-title">Your CSV Uploads</h2>
-              <p className="contacts-page-subtitle">
-                Click on any CSV to view its contacts
-              </p>
-            </div>
-            <button 
-              className="back-button"
-              onClick={() => navigate(-1)}
-            >
-              ← Back
-            </button>
-          </div>
+      {/* Search and Upload Bar */}
+      <div className="contacts-toolbar">
+        <div className="search-container">
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search by filename..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <button
+          className="upload-button"
+          onClick={() => setShowUploadModal(true)}
+        >
+          Upload CSV
+        </button>
+      </div>
 
-          {loading && (
-            <div className="contacts-page-loading">
-              <div className="loading-spinner"></div>
-              <p>Loading CSV uploads...</p>
-            </div>
-          )}
+      {/* CSV Uploads Table */}
+      {loading && (
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>Loading CSV uploads...</p>
+        </div>
+      )}
 
-          {error && (
-            <div className="contacts-page-error">
-              <span className="error-icon">!</span>
-              {error}
-            </div>
-          )}
+      {error && (
+        <div className="error-container">
+          <span className="error-icon">!</span>
+          {error}
+        </div>
+      )}
 
-          {!loading && !error && csvUploads.length === 0 && (
-            <div className="contacts-page-empty">
-              <div className="empty-icon">📁</div>
-              <h3>No CSV uploads yet</h3>
-              <p>Upload your first CSV file to get started</p>
-              <button 
-                className="empty-action-button"
-                onClick={() => navigate(-1)}
+      {!loading && !error && filteredUploads.length === 0 && searchQuery === '' && (
+        <div className="empty-state">
+          <h3>No CSV uploads yet</h3>
+          <p>Upload your first CSV file to get started</p>
+          <button
+            className="empty-action-button"
+            onClick={() => setShowUploadModal(true)}
+          >
+            Upload CSV
+          </button>
+        </div>
+      )}
+
+      {!loading && !error && filteredUploads.length === 0 && searchQuery !== '' && (
+        <div className="empty-state">
+          <h3>No results found</h3>
+          <p>No CSV files match "{searchQuery}"</p>
+        </div>
+      )}
+
+      {!loading && !error && filteredUploads.length > 0 && (
+        <div className="table-container">
+          <table className="csv-table">
+            <thead>
+              <tr>
+                <th>Filename</th>
+                <th>Contact Count</th>
+                <th>Upload Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUploads.map((upload, index) => (
+                <tr key={index}>
+                  <td className="filename-cell">
+                    {upload.source}
+                  </td>
+                  <td className="count-cell">{upload.contact_count}</td>
+                  <td className="date-cell">{formatDate(upload.last_uploaded)}</td>
+                  <td className="actions-cell">
+                    <button
+                      className="view-button"
+                      onClick={() => handleViewContacts(upload.source)}
+                      title="View contacts"
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Upload Modal */}
+      {showUploadModal && (
+        <div className="modal-overlay" onClick={() => setShowUploadModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Upload CSV File</h2>
+              <button
+                className="modal-close"
+                onClick={() => setShowUploadModal(false)}
               >
-                Go back to upload
+                ×
               </button>
             </div>
-          )}
-
-          {!loading && !error && csvUploads.length > 0 && (
-            <div className="csv-uploads-grid">
-              {csvUploads.map((upload, index) => (
-                <div
-                  key={index}
-                  className="csv-upload-card"
-                  onClick={() => handleCsvClick(upload.source)}
-                >
-                  <div className="csv-card-icon">📄</div>
-                  <div className="csv-card-content">
-                    <h3 className="csv-card-title">{upload.source}</h3>
-                    <div className="csv-card-stats">
-                      <div className="csv-card-stat">
-                        <span className="stat-label">Contacts:</span>
-                        <span className="stat-value">{upload.contact_count}</span>
-                      </div>
-                      <div className="csv-card-stat">
-                        <span className="stat-label">Uploaded:</span>
-                        <span className="stat-value">
-                          {formatDate(upload.last_uploaded)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="csv-card-arrow">→</div>
-                </div>
-              ))}
+            <div className="modal-body">
+              {userId && (
+                <CsvUpload
+                  userId={userId}
+                  onUploadComplete={handleUploadComplete}
+                />
+              )}
             </div>
-          )}
+          </div>
         </div>
-      </main>
+      )}
 
+      {/* Contact Modal */}
       <ContactModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        isOpen={isContactModalOpen}
+        onClose={handleCloseContactModal}
         csvSource={selectedCsv}
         userId={userId}
       />
