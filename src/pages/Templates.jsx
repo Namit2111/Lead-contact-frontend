@@ -1,15 +1,129 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function Templates() {
     const [templates, setTemplates] = useState([])
     const [isEditing, setIsEditing] = useState(false)
-    const [currentTemplate, setCurrentTemplate] = useState({ name: '', subject: '', body: '' })
+    const [currentTemplate, setCurrentTemplate] = useState({ id: null, name: '', subject: '', body: '' })
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    const [userId, setUserId] = useState(null)
 
-    const handleSave = () => {
-        // TODO: Save to backend
-        setTemplates([...templates, { ...currentTemplate, id: Date.now(), createdAt: new Date().toLocaleDateString() }])
+    useEffect(() => {
+        // Get user from localStorage
+        const savedUser = localStorage.getItem('user')
+        if (savedUser) {
+            const user = JSON.parse(savedUser)
+            setUserId(user.id)
+            loadTemplates(user.id)
+        } else {
+            setLoading(false)
+        }
+    }, [])
+
+    const loadTemplates = async (uid) => {
+        setLoading(true)
+        setError(null)
+        
+        try {
+            const response = await fetch('/api/templates', {
+                headers: { 'X-User-Id': uid }
+            })
+            
+            if (response.ok) {
+                const data = await response.json()
+                setTemplates(data.templates)
+            } else {
+                setError('Failed to load templates')
+            }
+        } catch (err) {
+            console.error('Error loading templates:', err)
+            setError('Failed to load templates')
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const handleSave = async () => {
+        if (!userId) return
+        
+        try {
+            const url = currentTemplate.id 
+                ? `/api/templates/${currentTemplate.id}`
+                : '/api/templates'
+            
+            const method = currentTemplate.id ? 'PUT' : 'POST'
+            
+            const response = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-User-Id': userId
+                },
+                body: JSON.stringify({
+                    name: currentTemplate.name,
+                    subject: currentTemplate.subject,
+                    body: currentTemplate.body
+                })
+            })
+            
+            if (response.ok) {
+                await loadTemplates(userId)
+                setIsEditing(false)
+                setCurrentTemplate({ id: null, name: '', subject: '', body: '' })
+            } else {
+                const data = await response.json()
+                alert(data.detail || 'Failed to save template')
+            }
+        } catch (err) {
+            console.error('Error saving template:', err)
+            alert('Failed to save template')
+        }
+    }
+
+    const handleEdit = (template) => {
+        setCurrentTemplate({
+            id: template.id,
+            name: template.name,
+            subject: template.subject,
+            body: template.body
+        })
+        setIsEditing(true)
+    }
+
+    const handleDelete = async (templateId) => {
+        if (!confirm('Are you sure you want to delete this template?')) return
+        
+        try {
+            const response = await fetch(`/api/templates/${templateId}`, {
+                method: 'DELETE',
+                headers: { 'X-User-Id': userId }
+            })
+            
+            if (response.ok) {
+                await loadTemplates(userId)
+            } else {
+                alert('Failed to delete template')
+            }
+        } catch (err) {
+            console.error('Error deleting template:', err)
+            alert('Failed to delete template')
+        }
+    }
+
+    const handleCancel = () => {
         setIsEditing(false)
-        setCurrentTemplate({ name: '', subject: '', body: '' })
+        setCurrentTemplate({ id: null, name: '', subject: '', body: '' })
+    }
+
+    if (loading) {
+        return (
+            <div className="templates-page">
+                <div style={{ textAlign: 'center', padding: '40px' }}>
+                    <div className="loading-spinner"></div>
+                    <p style={{ color: '#737373', marginTop: '16px' }}>Loading templates...</p>
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -29,6 +143,12 @@ function Templates() {
                     </button>
                 )}
             </div>
+
+            {error && (
+                <div style={{ padding: '12px', background: '#fafafa', border: '1px solid #e5e5e5', borderRadius: '6px', marginBottom: '16px', color: '#000000' }}>
+                    {error}
+                </div>
+            )}
 
             {isEditing ? (
                 <div className="card">
@@ -94,11 +214,12 @@ function Templates() {
                                 onClick={handleSave}
                                 className="pagination-btn"
                                 style={{ padding: '12px 24px' }}
+                                disabled={!currentTemplate.name || !currentTemplate.subject || !currentTemplate.body}
                             >
-                                Save Template
+                                {currentTemplate.id ? 'Update Template' : 'Save Template'}
                             </button>
                             <button
-                                onClick={() => setIsEditing(false)}
+                                onClick={handleCancel}
                                 className="btn-secondary"
                                 style={{ padding: '12px 24px' }}
                             >
@@ -124,13 +245,24 @@ function Templates() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {templates.map((t, i) => (
-                                        <tr key={i}>
+                                    {templates.map((t) => (
+                                        <tr key={t.id}>
                                             <td>{t.name}</td>
-                                            <td className="date-cell">{t.createdAt}</td>
+                                            <td className="date-cell">{new Date(t.created_at).toLocaleDateString()}</td>
                                             <td>
-                                                <button className="delete-btn" style={{ marginRight: '8px' }}>Edit</button>
-                                                <button className="delete-btn">Delete</button>
+                                                <button 
+                                                    className="delete-btn" 
+                                                    style={{ marginRight: '8px' }}
+                                                    onClick={() => handleEdit(t)}
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button 
+                                                    className="delete-btn"
+                                                    onClick={() => handleDelete(t.id)}
+                                                >
+                                                    Delete
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}
