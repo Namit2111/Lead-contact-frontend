@@ -27,6 +27,9 @@ function Layout() {
                     <Link to="/send" className={`nav-item ${isActive('/send')}`}>
                         Send Emails
                     </Link>
+                    <Link to="/campaigns" className={`nav-item ${location.pathname.startsWith('/campaigns') ? 'active' : ''}`}>
+                        Campaigns
+                    </Link>
                     <Link to="/logs" className={`nav-item ${isActive('/logs')}`}>
                         Logs
                     </Link>

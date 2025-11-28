@@ -6,6 +6,8 @@ import Dashboard from './pages/Dashboard'
 import Contacts from './pages/Contacts'
 import Templates from './pages/Templates'
 import SendEmails from './pages/SendEmails'
+import Campaigns from './pages/Campaigns'
+import CampaignDetail from './pages/CampaignDetail'
 import Logs from './pages/Logs'
 import Settings from './pages/Settings'
 import './App.css'
@@ -24,6 +26,8 @@ function App() {
           <Route path="/contacts" element={<Contacts />} />
           <Route path="/templates" element={<Templates />} />
           <Route path="/send" element={<SendEmails />} />
+          <Route path="/campaigns" element={<Campaigns />} />
+          <Route path="/campaigns/:campaignId" element={<CampaignDetail />} />
           <Route path="/logs" element={<Logs />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
