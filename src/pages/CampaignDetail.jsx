@@ -25,7 +25,7 @@ function CampaignDetail() {
     enabled: true,
     subject: 'Re: {{original_subject}}',
     body: 'Thank you for your reply!',
-    maxReplies: 3
+    maxReplies: 5
   })
   const [savingSettings, setSavingSettings] = useState(false)
   const pageSize = 25
