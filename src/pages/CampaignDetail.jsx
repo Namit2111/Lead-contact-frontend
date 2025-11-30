@@ -25,8 +25,10 @@ function CampaignDetail() {
     enabled: true,
     subject: 'Re: {{original_subject}}',
     body: 'Thank you for your reply!',
-    maxReplies: 5
+    maxReplies: 5,
+    promptId: null
   })
+  const [prompts, setPrompts] = useState([])
   const [savingSettings, setSavingSettings] = useState(false)
   const pageSize = 25
 
@@ -49,8 +51,23 @@ function CampaignDetail() {
       loadCampaign()
       loadEmails()
       loadConversations()
+      loadPrompts()
     }
   }, [userId, campaignId])
+
+  const loadPrompts = async () => {
+    try {
+      const response = await fetch('/api/prompts', {
+        headers: { 'X-User-Id': userId }
+      })
+      if (response.ok) {
+        const data = await response.json()
+        setPrompts(data.prompts)
+      }
+    } catch (err) {
+      console.error('Error loading prompts:', err)
+    }
+  }
 
   useEffect(() => {
     if (userId && campaignId) {
@@ -72,7 +89,8 @@ function CampaignDetail() {
           enabled: data.campaign.auto_reply_enabled ?? true,
           subject: data.campaign.auto_reply_subject || 'Re: {{original_subject}}',
           body: data.campaign.auto_reply_body || 'Thank you for your reply!',
-          maxReplies: data.campaign.max_replies_per_thread || 3
+          maxReplies: data.campaign.max_replies_per_thread || 3,
+          promptId: data.campaign.prompt_id || ''
         })
       } else {
         setError('Campaign not found')
@@ -172,7 +190,8 @@ function CampaignDetail() {
           enabled: autoReplySettings.enabled,
           subject: autoReplySettings.subject,
           body: autoReplySettings.body,
-          max_replies: autoReplySettings.maxReplies
+          max_replies: autoReplySettings.maxReplies,
+          prompt_id: autoReplySettings.promptId || null
         })
       })
 
@@ -532,6 +551,29 @@ function CampaignDetail() {
               />
               <p className="setting-description">
                 Stop auto-replying after this many responses to prevent spam
+              </p>
+            </div>
+
+            <div className="setting-row">
+              <label className="setting-label">AI Prompt</label>
+              <select
+                className="setting-input"
+                value={autoReplySettings.promptId}
+                onChange={(e) => setAutoReplySettings(prev => ({
+                  ...prev,
+                  promptId: e.target.value
+                }))}
+              >
+                <option value="">System Default</option>
+                {prompts.map((prompt) => (
+                  <option key={prompt.id} value={prompt.id}>
+                    {prompt.name} {prompt.is_default ? '(Your Default)' : ''}
+                  </option>
+                ))}
+              </select>
+              <p className="setting-description">
+                Select the AI prompt to use for generating auto-replies. 
+                <a href="/prompts" style={{ marginLeft: '8px', color: '#000' }}>Manage prompts →</a>
               </p>
             </div>
 

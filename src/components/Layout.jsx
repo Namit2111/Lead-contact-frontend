@@ -24,6 +24,9 @@ function Layout() {
                     <Link to="/templates" className={`nav-item ${isActive('/templates')}`}>
                         Templates
                     </Link>
+                    <Link to="/prompts" className={`nav-item ${isActive('/prompts')}`}>
+                        AI Prompts
+                    </Link>
                     <Link to="/send" className={`nav-item ${isActive('/send')}`}>
                         Send Emails
                     </Link>

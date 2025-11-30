@@ -4,8 +4,10 @@ function SendEmails() {
     const [step, setStep] = useState(1)
     const [selectedBatch, setSelectedBatch] = useState('')
     const [selectedTemplate, setSelectedTemplate] = useState('')
+    const [selectedPrompt, setSelectedPrompt] = useState('')
     const [csvUploads, setCsvUploads] = useState([])
     const [templates, setTemplates] = useState([])
+    const [prompts, setPrompts] = useState([])
     const [preview, setPreview] = useState(null)
     const [loading, setLoading] = useState(false)
     const [sending, setSending] = useState(false)
@@ -39,6 +41,20 @@ function SendEmails() {
             if (templateResponse.ok) {
                 const templateData = await templateResponse.json()
                 setTemplates(templateData.templates)
+            }
+
+            // Load prompts
+            const promptResponse = await fetch('/api/prompts', {
+                headers: { 'X-User-Id': uid }
+            })
+            if (promptResponse.ok) {
+                const promptData = await promptResponse.json()
+                setPrompts(promptData.prompts)
+                // Auto-select default prompt if exists
+                const defaultPrompt = promptData.prompts.find(p => p.is_default)
+                if (defaultPrompt) {
+                    setSelectedPrompt(defaultPrompt.id)
+                }
             }
         } catch (err) {
             console.error('Error loading data:', err)
@@ -77,7 +93,7 @@ function SendEmails() {
     }
 
     const handleNext = () => {
-        if (step === 2) {
+        if (step === 3) {
             loadPreview()
         }
         setStep(step + 1)
@@ -98,7 +114,8 @@ function SendEmails() {
                 },
                 body: JSON.stringify({
                     csv_source: selectedBatch,
-                    template_id: selectedTemplate
+                    template_id: selectedTemplate,
+                    prompt_id: selectedPrompt || null  // Include selected prompt
                 })
             })
             
@@ -112,10 +129,11 @@ function SendEmails() {
         }
     }
 
-    const stepLabels = ['Select Batch', 'Select Template', 'Preview', 'Send']
+    const stepLabels = ['Select Batch', 'Select Template', 'Select AI Prompt', 'Preview', 'Send']
 
     const selectedCsvName = csvUploads.find(c => c.source === selectedBatch)?.source || ''
     const selectedTemplateName = templates.find(t => t.id === selectedTemplate)?.name || ''
+    const selectedPromptName = prompts.find(p => p.id === selectedPrompt)?.name || 'System Default'
     const contactCount = csvUploads.find(c => c.source === selectedBatch)?.contact_count || 0
 
     return (
@@ -126,21 +144,22 @@ function SendEmails() {
             </div>
 
             {/* Progress Steps */}
-            <div style={{ display: 'flex', marginBottom: '32px', gap: '12px' }}>
-                {[1, 2, 3, 4].map(s => (
+            <div style={{ display: 'flex', marginBottom: '32px', gap: '8px', flexWrap: 'wrap' }}>
+                {[1, 2, 3, 4, 5].map(s => (
                     <div key={s} style={{
                         flex: 1,
-                        padding: '16px 12px',
+                        minWidth: '120px',
+                        padding: '12px 8px',
                         background: step >= s ? '#000000' : '#ffffff',
                         color: step >= s ? '#ffffff' : '#737373',
                         border: `1px solid ${step >= s ? '#000000' : '#e5e5e5'}`,
                         borderRadius: '6px',
                         fontWeight: '500',
-                        fontSize: '14px',
+                        fontSize: '13px',
                         textAlign: 'center',
                         transition: 'all 0.2s'
                     }}>
-                        Step {s}: {stepLabels[s - 1]}
+                        {s}. {stepLabels[s - 1]}
                     </div>
                 ))}
             </div>
@@ -149,7 +168,10 @@ function SendEmails() {
                 {step === 1 && (
                     <div>
                         <h3>Select Contact Batch</h3>
-                        <div style={{ marginTop: '24px' }}>
+                        <p style={{ color: '#737373', fontSize: '14px', marginBottom: '16px' }}>
+                            Choose which contacts to send emails to
+                        </p>
+                        <div style={{ marginTop: '16px' }}>
                             <select
                                 value={selectedBatch}
                                 onChange={(e) => setSelectedBatch(e.target.value)}
@@ -182,7 +204,10 @@ function SendEmails() {
                 {step === 2 && (
                     <div>
                         <h3>Select Email Template</h3>
-                        <div style={{ marginTop: '24px' }}>
+                        <p style={{ color: '#737373', fontSize: '14px', marginBottom: '16px' }}>
+                            Choose the email template to use
+                        </p>
+                        <div style={{ marginTop: '16px' }}>
                             <select
                                 value={selectedTemplate}
                                 onChange={(e) => setSelectedTemplate(e.target.value)}
@@ -214,6 +239,66 @@ function SendEmails() {
 
                 {step === 3 && (
                     <div>
+                        <h3>Select AI Prompt</h3>
+                        <p style={{ color: '#737373', fontSize: '14px', marginBottom: '16px' }}>
+                            Choose how the AI should respond to replies (for auto-reply feature)
+                        </p>
+                        <div style={{ marginTop: '16px' }}>
+                            <select
+                                value={selectedPrompt}
+                                onChange={(e) => setSelectedPrompt(e.target.value)}
+                                style={{
+                                    width: '100%',
+                                    padding: '12px',
+                                    borderRadius: '6px',
+                                    border: '1px solid #e5e5e5',
+                                    fontSize: '14px',
+                                    fontFamily: 'inherit',
+                                    background: '#ffffff'
+                                }}
+                            >
+                                <option value="">System Default (Built-in prompt)</option>
+                                {prompts.map((prompt) => (
+                                    <option key={prompt.id} value={prompt.id}>
+                                        {prompt.name} {prompt.is_default ? '(Your Default)' : ''}
+                                    </option>
+                                ))}
+                            </select>
+                            
+                            {/* Show selected prompt preview */}
+                            {selectedPrompt && (
+                                <div style={{
+                                    marginTop: '16px',
+                                    padding: '16px',
+                                    background: '#fafafa',
+                                    border: '1px solid #e5e5e5',
+                                    borderRadius: '6px'
+                                }}>
+                                    <p style={{ fontSize: '12px', color: '#737373', marginBottom: '8px' }}>
+                                        Prompt Preview:
+                                    </p>
+                                    <code style={{ 
+                                        fontSize: '12px', 
+                                        color: '#525252',
+                                        whiteSpace: 'pre-wrap',
+                                        wordBreak: 'break-word'
+                                    }}>
+                                        {prompts.find(p => p.id === selectedPrompt)?.prompt_text?.substring(0, 200)}...
+                                    </code>
+                                </div>
+                            )}
+                            
+                            <p style={{ marginTop: '16px', color: '#a3a3a3', fontSize: '13px' }}>
+                                The AI prompt controls how auto-replies are generated when contacts respond to your emails.
+                                <br />
+                                <a href="/prompts" style={{ color: '#000000' }}>Manage your prompts →</a>
+                            </p>
+                        </div>
+                    </div>
+                )}
+
+                {step === 4 && (
+                    <div>
                         <h3>Preview Campaign</h3>
                         {loading ? (
                             <div style={{ textAlign: 'center', padding: '40px' }}>
@@ -244,55 +329,77 @@ function SendEmails() {
                     </div>
                 )}
 
-                {step === 4 && !result && (
+                {step === 5 && !result && (
                     <div style={{ textAlign: 'center', padding: '40px 0' }}>
                         <h3 style={{ marginBottom: '16px' }}>Ready to Launch?</h3>
                         <p style={{ color: '#737373', marginBottom: '8px' }}>
                             You are about to send emails to <strong>{contactCount} contacts</strong>.
                         </p>
-                        <p style={{ color: '#737373', marginBottom: '32px', fontSize: '14px' }}>
-                            CSV: {selectedCsvName}<br/>
-                            Template: {selectedTemplateName}
-                        </p>
-                        <button
-                            className="pagination-btn"
-                            style={{ padding: '16px 48px', fontSize: '16px' }}
-                            onClick={handleSendCampaign}
-                            disabled={sending}
-                        >
-                            {sending ? 'Sending...' : 'Send Campaign'}
-                        </button>
+                        <div style={{ 
+                            color: '#737373', 
+                            marginBottom: '32px', 
+                            fontSize: '14px',
+                            background: '#fafafa',
+                            padding: '16px',
+                            borderRadius: '6px',
+                            display: 'inline-block',
+                            textAlign: 'left'
+                        }}>
+                            <p><strong>CSV:</strong> {selectedCsvName}</p>
+                            <p><strong>Template:</strong> {selectedTemplateName}</p>
+                            <p><strong>AI Prompt:</strong> {selectedPromptName}</p>
+                        </div>
+                        <div>
+                            <button
+                                className="pagination-btn"
+                                style={{ padding: '16px 48px', fontSize: '16px' }}
+                                onClick={handleSendCampaign}
+                                disabled={sending}
+                            >
+                                {sending ? 'Sending...' : 'Send Campaign'}
+                            </button>
+                        </div>
                     </div>
                 )}
 
-                {step === 4 && result && (
+                {step === 5 && result && (
                     <div style={{ textAlign: 'center', padding: '40px 0' }}>
                         <div style={{ fontSize: '48px', marginBottom: '16px' }}>
                             {result.success ? '✓' : '✕'}
                         </div>
                         <h3 style={{ marginBottom: '16px' }}>
-                            {result.success ? 'Campaign Sent!' : 'Campaign Failed'}
+                            {result.success ? 'Campaign Queued!' : 'Campaign Failed'}
                         </h3>
                         <p style={{ color: '#737373', marginBottom: '24px' }}>
                             {result.message}
                         </p>
                         <div style={{ display: 'inline-flex', gap: '24px', marginBottom: '32px' }}>
                             <div>
-                                <div style={{ fontSize: '24px', fontWeight: '600' }}>{result.sent}</div>
-                                <div style={{ fontSize: '14px', color: '#737373' }}>Sent</div>
-                            </div>
-                            <div>
-                                <div style={{ fontSize: '24px', fontWeight: '600' }}>{result.failed}</div>
-                                <div style={{ fontSize: '14px', color: '#737373' }}>Failed</div>
+                                <div style={{ fontSize: '24px', fontWeight: '600' }}>{result.total || contactCount}</div>
+                                <div style={{ fontSize: '14px', color: '#737373' }}>Total</div>
                             </div>
                         </div>
-                        <button
-                            className="pagination-btn"
-                            onClick={() => window.location.href = '/logs'}
-                            style={{ padding: '12px 32px' }}
-                        >
-                            View Logs
-                        </button>
+                        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                            <button
+                                className="btn-secondary"
+                                onClick={() => window.location.href = '/campaigns'}
+                                style={{ padding: '12px 32px' }}
+                            >
+                                View Campaigns
+                            </button>
+                            <button
+                                className="pagination-btn"
+                                onClick={() => {
+                                    setStep(1)
+                                    setResult(null)
+                                    setSelectedBatch('')
+                                    setSelectedTemplate('')
+                                }}
+                                style={{ padding: '12px 32px' }}
+                            >
+                                New Campaign
+                            </button>
+                        </div>
                     </div>
                 )}
 
@@ -311,7 +418,7 @@ function SendEmails() {
                     >
                         Back
                     </button>
-                    {step < 4 && (
+                    {step < 5 && (
                         <button
                             onClick={handleNext}
                             className="pagination-btn"
