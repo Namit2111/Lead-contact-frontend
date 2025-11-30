@@ -74,25 +74,25 @@ function Dashboard() {
             <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
                 <div className="card stat-card">
                     <h3>Total Contacts</h3>
-                    <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: '600', color: '#000000', marginTop: '12px' }}>
+                    <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: '600', color: 'var(--color-text-neutral)', marginTop: '12px' }}>
                         {stats.total_contacts}
                     </div>
                 </div>
                 <div className="card stat-card">
                     <h3>CSV Uploads</h3>
-                    <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: '600', color: '#000000', marginTop: '12px' }}>
+                    <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: '600', color: 'var(--color-text-neutral)', marginTop: '12px' }}>
                         {stats.csv_uploads}
                     </div>
                 </div>
                 <div className="card stat-card">
                     <h3>Templates</h3>
-                    <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: '600', color: '#000000', marginTop: '12px' }}>
+                    <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: '600', color: 'var(--color-text-neutral)', marginTop: '12px' }}>
                         {stats.total_templates}
                     </div>
                 </div>
                 <div className="card stat-card">
                     <h3>Emails Sent</h3>
-                    <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: '600', color: '#000000', marginTop: '12px' }}>
+                    <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: '600', color: 'var(--color-text-neutral)', marginTop: '12px' }}>
                         {stats.emails_sent}
                     </div>
                 </div>

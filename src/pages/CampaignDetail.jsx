@@ -114,11 +114,11 @@ function CampaignDetail() {
       if (response.ok) {
         const data = await response.json()
         let filteredLogs = data.logs
-        
+
         if (filter !== 'all') {
           filteredLogs = data.logs.filter(log => log.status === filter)
         }
-        
+
         setEmails(filteredLogs)
         setTotalEmails(data.total)
       }
@@ -294,8 +294,8 @@ function CampaignDetail() {
         </div>
         <div className="stat-card">
           <div className="stat-value">
-            {campaign.total_contacts > 0 
-              ? Math.round((campaign.sent / campaign.total_contacts) * 100) 
+            {campaign.total_contacts > 0
+              ? Math.round((campaign.sent / campaign.total_contacts) * 100)
               : 0}%
           </div>
           <div className="stat-label">Success Rate</div>
@@ -311,19 +311,19 @@ function CampaignDetail() {
       {/* Tabs */}
       <div className="tabs-container">
         <div className="tabs">
-          <button 
+          <button
             className={`tab ${activeTab === 'emails' ? 'active' : ''}`}
             onClick={() => setActiveTab('emails')}
           >
             📧 Email Logs
           </button>
-          <button 
+          <button
             className={`tab ${activeTab === 'conversations' ? 'active' : ''}`}
             onClick={() => setActiveTab('conversations')}
           >
             💬 Conversations {conversations.length > 0 && <span className="tab-badge">{conversations.length}</span>}
           </button>
-          <button 
+          <button
             className={`tab ${activeTab === 'settings' ? 'active' : ''}`}
             onClick={() => setActiveTab('settings')}
           >
@@ -338,19 +338,19 @@ function CampaignDetail() {
           <div className="section-header">
             <h2>Email Logs</h2>
             <div className="filter-buttons">
-              <button 
+              <button
                 className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
                 onClick={() => { setFilter('all'); setPage(1); }}
               >
                 All
               </button>
-              <button 
+              <button
                 className={`filter-btn ${filter === 'sent' ? 'active' : ''}`}
                 onClick={() => { setFilter('sent'); setPage(1); }}
               >
                 Sent
               </button>
-              <button 
+              <button
                 className={`filter-btn ${filter === 'failed' ? 'active' : ''}`}
                 onClick={() => { setFilter('failed'); setPage(1); }}
               >
@@ -403,7 +403,7 @@ function CampaignDetail() {
               {/* Pagination */}
               {totalPages > 1 && (
                 <div className="pagination">
-                  <button 
+                  <button
                     className="page-btn"
                     disabled={page === 1}
                     onClick={() => setPage(p => p - 1)}
@@ -413,7 +413,7 @@ function CampaignDetail() {
                   <span className="page-info">
                     Page {page} of {totalPages}
                   </span>
-                  <button 
+                  <button
                     className="page-btn"
                     disabled={page === totalPages}
                     onClick={() => setPage(p => p + 1)}
@@ -450,8 +450,8 @@ function CampaignDetail() {
           ) : (
             <div className="conversations-list">
               {conversations.map((conv) => (
-                <div 
-                  key={conv.id} 
+                <div
+                  key={conv.id}
                   className="conversation-card"
                   onClick={() => openConversation(conv)}
                 >
@@ -489,11 +489,11 @@ function CampaignDetail() {
           <div className="settings-form">
             <div className="setting-row">
               <label className="toggle-label">
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   checked={autoReplySettings.enabled}
                   onChange={(e) => setAutoReplySettings(prev => ({
-                    ...prev, 
+                    ...prev,
                     enabled: e.target.checked
                   }))}
                 />
@@ -507,12 +507,12 @@ function CampaignDetail() {
 
             <div className="setting-row">
               <label className="setting-label">Reply Subject</label>
-              <input 
+              <input
                 type="text"
                 className="setting-input"
                 value={autoReplySettings.subject}
                 onChange={(e) => setAutoReplySettings(prev => ({
-                  ...prev, 
+                  ...prev,
                   subject: e.target.value
                 }))}
                 placeholder="Re: {{original_subject}}"
@@ -524,11 +524,11 @@ function CampaignDetail() {
 
             <div className="setting-row">
               <label className="setting-label">Reply Message</label>
-              <textarea 
+              <textarea
                 className="setting-textarea"
                 value={autoReplySettings.body}
                 onChange={(e) => setAutoReplySettings(prev => ({
-                  ...prev, 
+                  ...prev,
                   body: e.target.value
                 }))}
                 placeholder="Thank you for your reply!"
@@ -538,12 +538,12 @@ function CampaignDetail() {
 
             <div className="setting-row">
               <label className="setting-label">Max Auto-Replies per Thread</label>
-              <input 
+              <input
                 type="number"
                 className="setting-input small"
                 value={autoReplySettings.maxReplies}
                 onChange={(e) => setAutoReplySettings(prev => ({
-                  ...prev, 
+                  ...prev,
                   maxReplies: parseInt(e.target.value) || 1
                 }))}
                 min={1}
@@ -572,13 +572,13 @@ function CampaignDetail() {
                 ))}
               </select>
               <p className="setting-description">
-                Select the AI prompt to use for generating auto-replies. 
-                <a href="/prompts" style={{ marginLeft: '8px', color: '#000' }}>Manage prompts →</a>
+                Select the AI prompt to use for generating auto-replies.
+                <a href="/prompts" style={{ marginLeft: '8px', color: 'var(--color-text-neutral)' }}>Manage prompts →</a>
               </p>
             </div>
 
             <div className="setting-actions">
-              <button 
+              <button
                 className="save-btn"
                 onClick={saveAutoReplySettings}
                 disabled={savingSettings}
@@ -616,14 +616,14 @@ function CampaignDetail() {
               ) : (
                 <div className="messages-list">
                   {conversationMessages.map((msg, index) => (
-                    <div 
-                      key={index} 
+                    <div
+                      key={index}
                       className={`message ${msg.direction === 'outbound' ? 'outbound' : 'inbound'}`}
                     >
                       <div className="message-header">
                         <span className="message-from">
-                          {msg.direction === 'outbound' 
-                            ? (msg.is_auto_reply ? '🤖 Auto-Reply' : '📤 You') 
+                          {msg.direction === 'outbound'
+                            ? (msg.is_auto_reply ? '🤖 Auto-Reply' : '📤 You')
                             : `📥 ${msg.from_email}`}
                         </span>
                         <span className="message-time">{formatDate(msg.sent_at)}</span>
@@ -631,7 +631,7 @@ function CampaignDetail() {
                       <div className="message-subject">
                         <strong>Subject:</strong> {msg.subject}
                       </div>
-                      <div 
+                      <div
                         className="message-body"
                         dangerouslySetInnerHTML={{ __html: msg.body }}
                       />

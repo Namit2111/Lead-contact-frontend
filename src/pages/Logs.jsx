@@ -61,9 +61,9 @@ function Logs() {
 
     const getStatusBadge = (status) => {
         const styles = {
-            sent: { background: '#f0fdf4', color: '#166534', border: '1px solid #dcfce7' },
-            failed: { background: '#fef2f2', color: '#991b1b', border: '1px solid #fee2e2' },
-            pending: { background: '#fafafa', color: '#737373', border: '1px solid #e5e5e5' }
+            sent: { background: 'var(--color-success-bg)', color: 'var(--color-success)', border: '1px solid var(--color-success-bg)' },
+            failed: { background: 'var(--color-error-bg)', color: 'var(--color-error)', border: '1px solid var(--color-error-bg)' },
+            pending: { background: 'var(--color-bg-warm)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)' }
         }
         const style = styles[status] || styles.pending
         return (
@@ -84,7 +84,7 @@ function Logs() {
             <div className="logs-page">
                 <div style={{ textAlign: 'center', padding: '40px' }}>
                     <div className="loading-spinner"></div>
-                    <p style={{ color: '#737373', marginTop: '16px' }}>Loading logs...</p>
+                    <p style={{ color: 'var(--color-text-secondary)', marginTop: '16px' }}>Loading logs...</p>
                 </div>
             </div>
         )
@@ -98,14 +98,14 @@ function Logs() {
             </div>
 
             {error && (
-                <div style={{ padding: '12px', background: '#fafafa', border: '1px solid #e5e5e5', borderRadius: '6px', marginBottom: '16px', color: '#000000' }}>
+                <div style={{ padding: '12px', background: 'var(--color-bg-warm)', border: '1px solid var(--color-border)', borderRadius: '6px', marginBottom: '16px', color: 'var(--color-text-neutral)' }}>
                     {error}
                 </div>
             )}
 
             <div className="card">
                 {logs.length === 0 ? (
-                    <p style={{ color: '#737373', fontStyle: 'italic', textAlign: 'center', padding: '40px' }}>
+                    <p style={{ color: 'var(--color-text-secondary)', fontStyle: 'italic', textAlign: 'center', padding: '40px' }}>
                         No email logs yet. Send your first campaign to see logs here.
                     </p>
                 ) : (
@@ -137,8 +137,8 @@ function Logs() {
 
                         {/* Pagination */}
                         {total > pageSize && (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '24px', paddingTop: '24px', borderTop: '1px solid #e5e5e5' }}>
-                                <div style={{ fontSize: '14px', color: '#737373' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '24px', paddingTop: '24px', borderTop: '1px solid var(--color-border)' }}>
+                                <div style={{ fontSize: '14px', color: 'var(--color-text-secondary)' }}>
                                     Showing {(page - 1) * pageSize + 1} - {Math.min(page * pageSize, total)} of {total}
                                 </div>
                                 <div style={{ display: 'flex', gap: '12px' }}>

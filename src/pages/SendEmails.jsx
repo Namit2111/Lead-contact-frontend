@@ -63,7 +63,7 @@ function SendEmails() {
 
     const loadPreview = async () => {
         if (!selectedBatch || !selectedTemplate || !userId) return
-        
+
         setLoading(true)
         try {
             const response = await fetch('/api/campaigns/preview', {
@@ -77,7 +77,7 @@ function SendEmails() {
                     template_id: selectedTemplate
                 })
             })
-            
+
             if (response.ok) {
                 const data = await response.json()
                 setPreview(data)
@@ -98,12 +98,12 @@ function SendEmails() {
         }
         setStep(step + 1)
     }
-    
+
     const handleBack = () => setStep(step - 1)
 
     const handleSendCampaign = async () => {
         if (!userId || !selectedBatch || !selectedTemplate) return
-        
+
         setSending(true)
         try {
             const response = await fetch('/api/campaigns/send', {
@@ -118,7 +118,7 @@ function SendEmails() {
                     prompt_id: selectedPrompt || null  // Include selected prompt
                 })
             })
-            
+
             const data = await response.json()
             setResult(data)
         } catch (err) {
@@ -150,9 +150,9 @@ function SendEmails() {
                         flex: 1,
                         minWidth: '120px',
                         padding: '12px 8px',
-                        background: step >= s ? '#000000' : '#ffffff',
-                        color: step >= s ? '#ffffff' : '#737373',
-                        border: `1px solid ${step >= s ? '#000000' : '#e5e5e5'}`,
+                        background: step >= s ? 'var(--color-text-neutral)' : 'var(--color-white)',
+                        color: step >= s ? 'var(--color-white)' : 'var(--color-text-secondary)',
+                        border: `1px solid ${step >= s ? 'var(--color-text-neutral)' : 'var(--color-border)'}`,
                         borderRadius: '6px',
                         fontWeight: '500',
                         fontSize: '13px',
@@ -168,7 +168,7 @@ function SendEmails() {
                 {step === 1 && (
                     <div>
                         <h3>Select Contact Batch</h3>
-                        <p style={{ color: '#737373', fontSize: '14px', marginBottom: '16px' }}>
+                        <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px', marginBottom: '16px' }}>
                             Choose which contacts to send emails to
                         </p>
                         <div style={{ marginTop: '16px' }}>
@@ -179,10 +179,10 @@ function SendEmails() {
                                     width: '100%',
                                     padding: '12px',
                                     borderRadius: '6px',
-                                    border: '1px solid #e5e5e5',
+                                    border: '1px solid var(--color-border)',
                                     fontSize: '14px',
                                     fontFamily: 'inherit',
-                                    background: '#ffffff'
+                                    background: 'var(--color-white)'
                                 }}
                             >
                                 <option value="">-- Select a CSV Batch --</option>
@@ -193,7 +193,7 @@ function SendEmails() {
                                 ))}
                             </select>
                             {csvUploads.length === 0 && (
-                                <p style={{ marginTop: '12px', color: '#737373', fontSize: '14px' }}>
+                                <p style={{ marginTop: '12px', color: 'var(--color-text-secondary)', fontSize: '14px' }}>
                                     No CSV uploads found. Please upload contacts first.
                                 </p>
                             )}
@@ -204,7 +204,7 @@ function SendEmails() {
                 {step === 2 && (
                     <div>
                         <h3>Select Email Template</h3>
-                        <p style={{ color: '#737373', fontSize: '14px', marginBottom: '16px' }}>
+                        <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px', marginBottom: '16px' }}>
                             Choose the email template to use
                         </p>
                         <div style={{ marginTop: '16px' }}>
@@ -215,10 +215,10 @@ function SendEmails() {
                                     width: '100%',
                                     padding: '12px',
                                     borderRadius: '6px',
-                                    border: '1px solid #e5e5e5',
+                                    border: '1px solid var(--color-border)',
                                     fontSize: '14px',
                                     fontFamily: 'inherit',
-                                    background: '#ffffff'
+                                    background: 'var(--color-white)'
                                 }}
                             >
                                 <option value="">-- Select a Template --</option>
@@ -229,7 +229,7 @@ function SendEmails() {
                                 ))}
                             </select>
                             {templates.length === 0 && (
-                                <p style={{ marginTop: '12px', color: '#737373', fontSize: '14px' }}>
+                                <p style={{ marginTop: '12px', color: 'var(--color-text-secondary)', fontSize: '14px' }}>
                                     No templates found. Please create a template first.
                                 </p>
                             )}
@@ -240,7 +240,7 @@ function SendEmails() {
                 {step === 3 && (
                     <div>
                         <h3>Select AI Prompt</h3>
-                        <p style={{ color: '#737373', fontSize: '14px', marginBottom: '16px' }}>
+                        <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px', marginBottom: '16px' }}>
                             Choose how the AI should respond to replies (for auto-reply feature)
                         </p>
                         <div style={{ marginTop: '16px' }}>
@@ -251,10 +251,10 @@ function SendEmails() {
                                     width: '100%',
                                     padding: '12px',
                                     borderRadius: '6px',
-                                    border: '1px solid #e5e5e5',
+                                    border: '1px solid var(--color-border)',
                                     fontSize: '14px',
                                     fontFamily: 'inherit',
-                                    background: '#ffffff'
+                                    background: 'var(--color-white)'
                                 }}
                             >
                                 <option value="">System Default (Built-in prompt)</option>
@@ -264,22 +264,22 @@ function SendEmails() {
                                     </option>
                                 ))}
                             </select>
-                            
+
                             {/* Show selected prompt preview */}
                             {selectedPrompt && (
                                 <div style={{
                                     marginTop: '16px',
                                     padding: '16px',
-                                    background: '#fafafa',
-                                    border: '1px solid #e5e5e5',
+                                    background: 'var(--color-bg-warm)',
+                                    border: '1px solid var(--color-border)',
                                     borderRadius: '6px'
                                 }}>
-                                    <p style={{ fontSize: '12px', color: '#737373', marginBottom: '8px' }}>
+                                    <p style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '8px' }}>
                                         Prompt Preview:
                                     </p>
-                                    <code style={{ 
-                                        fontSize: '12px', 
-                                        color: '#525252',
+                                    <code style={{
+                                        fontSize: '12px',
+                                        color: 'var(--color-text-neutral)',
                                         whiteSpace: 'pre-wrap',
                                         wordBreak: 'break-word'
                                     }}>
@@ -287,11 +287,11 @@ function SendEmails() {
                                     </code>
                                 </div>
                             )}
-                            
-                            <p style={{ marginTop: '16px', color: '#a3a3a3', fontSize: '13px' }}>
+
+                            <p style={{ marginTop: '16px', color: 'var(--color-text-secondary)', fontSize: '13px' }}>
                                 The AI prompt controls how auto-replies are generated when contacts respond to your emails.
                                 <br />
-                                <a href="/prompts" style={{ color: '#000000' }}>Manage your prompts →</a>
+                                <a href="/prompts" style={{ color: 'var(--color-text-neutral)' }}>Manage your prompts →</a>
                             </p>
                         </div>
                     </div>
@@ -303,28 +303,28 @@ function SendEmails() {
                         {loading ? (
                             <div style={{ textAlign: 'center', padding: '40px' }}>
                                 <div className="loading-spinner"></div>
-                                <p style={{ color: '#737373', marginTop: '16px' }}>Loading preview...</p>
+                                <p style={{ color: 'var(--color-text-secondary)', marginTop: '16px' }}>Loading preview...</p>
                             </div>
                         ) : preview ? (
                             <div style={{
                                 marginTop: '24px',
                                 padding: '24px',
-                                border: '1px solid #e5e5e5',
+                                border: '1px solid var(--color-border)',
                                 borderRadius: '6px',
-                                background: '#fafafa'
+                                background: 'var(--color-bg-warm)'
                             }}>
                                 <p style={{ marginBottom: '12px' }}><strong>To:</strong> {preview.to}</p>
                                 <p style={{ marginBottom: '12px' }}><strong>Subject:</strong> {preview.subject}</p>
-                                <hr style={{ margin: '16px 0', border: 'none', borderTop: '1px solid #e5e5e5' }} />
-                                <div style={{ minHeight: '100px', color: '#171717', whiteSpace: 'pre-wrap' }}>
+                                <hr style={{ margin: '16px 0', border: 'none', borderTop: '1px solid var(--color-border)' }} />
+                                <div style={{ minHeight: '100px', color: 'var(--color-text-neutral)', whiteSpace: 'pre-wrap' }}>
                                     {preview.body}
                                 </div>
-                                <p style={{ marginTop: '16px', fontSize: '13px', color: '#737373' }}>
+                                <p style={{ marginTop: '16px', fontSize: '13px', color: 'var(--color-text-secondary)' }}>
                                     Preview shown with first contact from {selectedCsvName}
                                 </p>
                             </div>
                         ) : (
-                            <p style={{ marginTop: '24px', color: '#737373' }}>No preview available</p>
+                            <p style={{ marginTop: '24px', color: 'var(--color-text-secondary)' }}>No preview available</p>
                         )}
                     </div>
                 )}
@@ -332,14 +332,14 @@ function SendEmails() {
                 {step === 5 && !result && (
                     <div style={{ textAlign: 'center', padding: '40px 0' }}>
                         <h3 style={{ marginBottom: '16px' }}>Ready to Launch?</h3>
-                        <p style={{ color: '#737373', marginBottom: '8px' }}>
+                        <p style={{ color: 'var(--color-text-secondary)', marginBottom: '8px' }}>
                             You are about to send emails to <strong>{contactCount} contacts</strong>.
                         </p>
-                        <div style={{ 
-                            color: '#737373', 
-                            marginBottom: '32px', 
+                        <div style={{
+                            color: 'var(--color-text-secondary)',
+                            marginBottom: '32px',
                             fontSize: '14px',
-                            background: '#fafafa',
+                            background: 'var(--color-bg-warm)',
                             padding: '16px',
                             borderRadius: '6px',
                             display: 'inline-block',
@@ -370,13 +370,13 @@ function SendEmails() {
                         <h3 style={{ marginBottom: '16px' }}>
                             {result.success ? 'Campaign Queued!' : 'Campaign Failed'}
                         </h3>
-                        <p style={{ color: '#737373', marginBottom: '24px' }}>
+                        <p style={{ color: 'var(--color-text-secondary)', marginBottom: '24px' }}>
                             {result.message}
                         </p>
                         <div style={{ display: 'inline-flex', gap: '24px', marginBottom: '32px' }}>
                             <div>
                                 <div style={{ fontSize: '24px', fontWeight: '600' }}>{result.total || contactCount}</div>
-                                <div style={{ fontSize: '14px', color: '#737373' }}>Total</div>
+                                <div style={{ fontSize: '14px', color: 'var(--color-text-secondary)' }}>Total</div>
                             </div>
                         </div>
                         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
@@ -407,7 +407,7 @@ function SendEmails() {
                     display: 'flex',
                     justifyContent: 'space-between',
                     marginTop: '32px',
-                    borderTop: '1px solid #e5e5e5',
+                    borderTop: '1px solid var(--color-border)',
                     paddingTop: '24px'
                 }}>
                     <button

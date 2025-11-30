@@ -1,3 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,300;400;600;700&display=swap');
+
+:root {
+  /* Color Palette */
+  --color-bg-warm: #F9F9F7;
+  --color-accent-green: #8BB9A2;
+  --color-accent-green-hover: #7aa38f;
+  --color-text-neutral: #262626;
+  --color-text-secondary: #737373;
+  --color-white: #ffffff;
+  --color-border: #E5E5E5;
+
+  /* Shadows & Radius */
+  --shadow-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.03);
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 8px;
+
+  /* Fonts */
+  --font-primary: 'Nunito Sans', sans-serif;
+
+  /* Status Colors */
+  --color-success: #15803d;
+  --color-success-bg: #dcfce7;
+  --color-error: #dc2626;
+  --color-error-bg: #fee2e2;
+  --color-warning: #b45309;
+  --color-warning-bg: #fef3c7;
+  --color-info: #1d4ed8;
+  --color-info-bg: #dbeafe;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,13 +38,11 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #ffffff;
-  color: #000000;
+  background: var(--color-bg-warm);
+  color: var(--color-text-neutral);
   min-height: 100vh;
 }
 

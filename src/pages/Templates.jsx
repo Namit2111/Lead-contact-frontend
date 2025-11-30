@@ -120,7 +120,7 @@ function Templates() {
             <div className="templates-page">
                 <div style={{ textAlign: 'center', padding: '40px' }}>
                     <div className="loading-spinner"></div>
-                    <p style={{ color: '#737373', marginTop: '16px' }}>Loading templates...</p>
+                    <p style={{ color: 'var(--color-text-secondary)', marginTop: '16px' }}>Loading templates...</p>
                 </div>
             </div>
         )
@@ -145,7 +145,7 @@ function Templates() {
             </div>
 
             {error && (
-                <div style={{ padding: '12px', background: '#fafafa', border: '1px solid #e5e5e5', borderRadius: '6px', marginBottom: '16px', color: '#000000' }}>
+                <div style={{ padding: '12px', background: 'var(--color-bg-warm)', border: '1px solid var(--color-border)', borderRadius: '6px', marginBottom: '16px', color: 'var(--color-text-neutral)' }}>
                     {error}
                 </div>
             )}
@@ -155,7 +155,7 @@ function Templates() {
                     <h3>{currentTemplate.id ? 'Edit Template' : 'New Template'}</h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '24px' }}>
                         <div>
-                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', fontSize: '14px', color: '#000000' }}>Template Name</label>
+                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', fontSize: '14px', color: 'var(--color-text-neutral)' }}>Template Name</label>
                             <input
                                 type="text"
                                 value={currentTemplate.name}
@@ -164,7 +164,7 @@ function Templates() {
                                     width: '100%',
                                     padding: '12px',
                                     borderRadius: '6px',
-                                    border: '1px solid #e5e5e5',
+                                    border: '1px solid var(--color-border)',
                                     fontSize: '14px',
                                     fontFamily: 'inherit'
                                 }}
@@ -172,7 +172,7 @@ function Templates() {
                             />
                         </div>
                         <div>
-                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', fontSize: '14px', color: '#000000' }}>Subject Line</label>
+                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', fontSize: '14px', color: 'var(--color-text-neutral)' }}>Subject Line</label>
                             <input
                                 type="text"
                                 value={currentTemplate.subject}
@@ -181,7 +181,7 @@ function Templates() {
                                     width: '100%',
                                     padding: '12px',
                                     borderRadius: '6px',
-                                    border: '1px solid #e5e5e5',
+                                    border: '1px solid var(--color-border)',
                                     fontSize: '14px',
                                     fontFamily: 'inherit'
                                 }}
@@ -189,7 +189,7 @@ function Templates() {
                             />
                         </div>
                         <div>
-                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', fontSize: '14px', color: '#000000' }}>Email Body</label>
+                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', fontSize: '14px', color: 'var(--color-text-neutral)' }}>Email Body</label>
                             <textarea
                                 value={currentTemplate.body}
                                 onChange={(e) => setCurrentTemplate({ ...currentTemplate, body: e.target.value })}
@@ -198,18 +198,18 @@ function Templates() {
                                     minHeight: '200px',
                                     padding: '12px',
                                     borderRadius: '6px',
-                                    border: '1px solid #e5e5e5',
+                                    border: '1px solid var(--color-border)',
                                     fontFamily: 'inherit',
                                     fontSize: '14px',
                                     resize: 'vertical'
                                 }}
                                 placeholder="Hello {{name}}, ..."
                             />
-                            <p style={{ fontSize: '13px', color: '#737373', marginTop: '8px' }}>
-                                Use <code style={{ background: '#fafafa', padding: '2px 6px', borderRadius: '3px' }}>{`{{variable}}`}</code> to insert dynamic content.
+                            <p style={{ fontSize: '13px', color: 'var(--color-text-secondary)', marginTop: '8px' }}>
+                                Use <code style={{ background: 'var(--color-bg-warm)', padding: '2px 6px', borderRadius: '3px' }}>{`{{variable}}`}</code> to insert dynamic content.
                             </p>
                         </div>
-                        <div style={{ display: 'flex', gap: '12px', marginTop: '12px', paddingTop: '20px', borderTop: '1px solid #e5e5e5' }}>
+                        <div style={{ display: 'flex', gap: '12px', marginTop: '12px', paddingTop: '20px', borderTop: '1px solid var(--color-border)' }}>
                             <button
                                 onClick={handleSave}
                                 className="pagination-btn"
@@ -231,7 +231,7 @@ function Templates() {
             ) : (
                 <div className="card">
                     {templates.length === 0 ? (
-                        <p style={{ color: '#737373', fontStyle: 'italic', textAlign: 'center', padding: '40px' }}>
+                        <p style={{ color: 'var(--color-text-secondary)', fontStyle: 'italic', textAlign: 'center', padding: '40px' }}>
                             No templates created yet. Click "Create Template" to get started.
                         </p>
                     ) : (

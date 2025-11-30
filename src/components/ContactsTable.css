@@ -1,132 +1,162 @@
 .contacts-table-container {
     width: 100%;
     overflow-x: auto;
-    border-radius: 8px;
-    border: 1px solid #e5e5e5;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    box-shadow: var(--shadow-card);
+    background: var(--color-white);
 }
 
 .contacts-table {
     width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.9rem;
 }
 
 .contacts-table thead {
-    background: #000000;
-    color: #ffffff;
+    background: var(--color-bg-warm);
 }
 
 .contacts-table th {
-    padding: 16px 12px;
+    padding: 20px 24px;
     text-align: left;
-    font-weight: 600;
-    font-size: 13px;
+    font-weight: 700;
+    font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    color: var(--color-text-secondary);
+    border-bottom: 1px solid var(--color-border);
     white-space: nowrap;
+}
+
+.contacts-table th:first-child {
+    padding-left: 32px;
+}
+
+.contacts-table th:last-child {
+    padding-right: 32px;
 }
 
 .contacts-table th.sortable {
     cursor: pointer;
     user-select: none;
-    transition: background-color 0.2s;
+    transition: color 0.2s ease;
 }
 
 .contacts-table th.sortable:hover {
-    background-color: #171717;
+    color: var(--color-text-neutral);
 }
 
 .sort-icon {
-    margin-left: 6px;
-    opacity: 0.6;
-    font-size: 12px;
+    margin-left: 8px;
+    opacity: 0.4;
+    font-size: 0.8rem;
+    transition: opacity 0.2s ease;
 }
 
 .sort-icon.active {
     opacity: 1;
-    font-weight: bold;
+    color: var(--color-accent-green);
 }
 
 .contacts-table tbody tr {
-    border-bottom: 1px solid #e5e5e5;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s ease;
 }
 
 .contacts-table tbody tr:hover {
     background-color: #fafafa;
 }
 
-.contacts-table tbody tr:last-child {
+.contacts-table td {
+    padding: 20px 24px;
+    color: var(--color-text-neutral);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.contacts-table td:first-child {
+    padding-left: 32px;
+}
+
+.contacts-table td:last-child {
+    padding-right: 32px;
+}
+
+.contacts-table tbody tr:last-child td {
     border-bottom: none;
 }
 
-.contacts-table td {
-    padding: 14px 12px;
-    color: #171717;
-}
-
 .email-cell {
-    font-weight: 500;
-    color: #000000;
+    font-weight: 600;
+    color: var(--color-text-neutral);
 }
 
 .date-cell {
-    color: #737373;
-    font-size: 13px;
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
 }
 
 .source-badge {
     display: inline-block;
-    padding: 4px 10px;
-    background: #000000;
-    color: #ffffff;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 500;
+    padding: 6px 14px;
+    background: var(--color-bg-warm);
+    color: var(--color-text-neutral);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
     text-transform: capitalize;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .delete-btn {
     background: transparent;
-    border: none;
+    border: 1px solid transparent;
     cursor: pointer;
-    font-size: 13px;
-    padding: 6px 12px;
-    border-radius: 4px;
-    transition: all 0.2s;
-    color: #737373;
-    font-weight: 500;
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+    color: var(--color-text-secondary);
+    font-weight: 600;
 }
 
 .delete-btn:hover {
-    background-color: #000000;
-    color: #ffffff;
+    background-color: #fff5f5;
+    color: #c53030;
+    border-color: #fed7d7;
 }
 
 .delete-btn:active {
-    transform: scale(0.95);
+    transform: scale(0.98);
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
     .contacts-table {
-        font-size: 12px;
+        font-size: 0.85rem;
     }
 
     .contacts-table th,
     .contacts-table td {
-        padding: 10px 8px;
+        padding: 16px 12px;
     }
 
-    .contacts-table th {
-        font-size: 11px;
+    .contacts-table th:first-child,
+    .contacts-table td:first-child {
+        padding-left: 20px;
+    }
+
+    .contacts-table th:last-child,
+    .contacts-table td:last-child {
+        padding-right: 20px;
     }
 }
 
 /* Empty state */
 .contacts-table tbody tr.empty-row td {
     text-align: center;
-    padding: 40px;
-    color: #737373;
+    padding: 64px;
+    color: var(--color-text-secondary);
     font-style: italic;
+    font-size: 1rem;
 }
