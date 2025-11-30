@@ -120,19 +120,26 @@
 
 .actions-cell {
   text-align: right;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
 }
 
-.view-button {
+.view-button,
+.delete-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 8px;
   background: #ffffff;
-  color: #000000;
   border: 1px solid #e5e5e5;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+.view-button {
+  color: #000000;
 }
 
 .view-button:hover {
@@ -141,7 +148,18 @@
   border-color: #000000;
 }
 
-.view-button svg {
+.delete-button {
+  color: #dc2626;
+}
+
+.delete-button:hover {
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+}
+
+.view-button svg,
+.delete-button svg {
   display: block;
 }
 
