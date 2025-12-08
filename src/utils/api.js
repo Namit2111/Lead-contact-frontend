@@ -14,12 +14,18 @@ const getApiUrl = () => {
 
 /**
  * Constructs a full API URL
- * @param {string} endpoint - API endpoint (e.g., '/providers' or 'providers')
+ * @param {string} endpoint - API endpoint (e.g., '/api/providers' or '/providers')
  * @returns {string} Full API URL
  */
 export const apiUrl = (endpoint) => {
   const baseUrl = getApiUrl()
-  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
+  let cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
+  
+  // In production, remove /api prefix since backend routes don't have it
+  // In development, keep /api prefix for Vite proxy to handle
+  if (baseUrl && cleanEndpoint.startsWith('/api/')) {
+    cleanEndpoint = cleanEndpoint.replace(/^\/api/, '')
+  }
   
   // If we have a base URL, append the endpoint
   // Otherwise, return the endpoint as-is (for Vite proxy)
