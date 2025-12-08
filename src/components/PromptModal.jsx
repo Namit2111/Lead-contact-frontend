@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { apiUrl } from '../utils/api'
 import './PromptModal.css'
 
 function PromptModal({ prompt, userId, onClose, onSave }) {
@@ -25,7 +26,7 @@ function PromptModal({ prompt, userId, onClose, onSave }) {
 
   const loadSystemDefault = async () => {
     try {
-      const response = await fetch('/api/prompts/system-default')
+      const response = await fetch(apiUrl('/api/prompts/system-default'))
       if (response.ok) {
         const data = await response.json()
         setPromptText(data.prompt_text)
@@ -52,8 +53,8 @@ function PromptModal({ prompt, userId, onClose, onSave }) {
 
     try {
       const url = isEditing 
-        ? `/api/prompts/${prompt.id}`
-        : '/api/prompts'
+        ? apiUrl(`/api/prompts/${prompt.id}`)
+        : apiUrl('/api/prompts')
       
       const method = isEditing ? 'PUT' : 'POST'
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { apiUrl } from '../utils/api'
 import './Campaigns.css'
 
 function Campaigns() {
@@ -45,7 +46,7 @@ function Campaigns() {
     setError(null)
 
     try {
-      const response = await fetch('/api/campaigns', {
+      const response = await fetch(apiUrl('/api/campaigns'), {
         headers: {
           'X-User-Id': uid
         }

@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { apiUrl } from '../utils/api'
 import './CsvUpload.css'
 
 function CsvUpload({ userId, onUploadComplete }) {
@@ -69,7 +70,7 @@ function CsvUpload({ userId, onUploadComplete }) {
       const formData = new FormData()
       formData.append('file', file)
 
-      const response = await fetch('/api/contacts/upload', {
+      const response = await fetch(apiUrl('/api/contacts/upload'), {
         method: 'POST',
         headers: {
           'X-User-Id': userId

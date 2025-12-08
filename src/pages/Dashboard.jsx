@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { apiUrl } from '../utils/api'
 
 function Dashboard() {
     const location = useLocation()
@@ -46,7 +47,7 @@ function Dashboard() {
             const savedUser = JSON.parse(localStorage.getItem('user'))
             if (savedUser?.id) {
                 // Fetch contact stats
-                const statsResponse = await fetch('/api/contacts/stats', {
+                const statsResponse = await fetch(apiUrl('/api/contacts/stats'), {
                     headers: { 'X-User-Id': savedUser.id }
                 })
                 if (statsResponse.ok) {

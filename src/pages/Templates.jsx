@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { apiUrl } from '../utils/api'
 
 function Templates() {
     const [templates, setTemplates] = useState([])
@@ -25,7 +26,7 @@ function Templates() {
         setError(null)
         
         try {
-            const response = await fetch('/api/templates', {
+            const response = await fetch(apiUrl('/api/templates'), {
                 headers: { 'X-User-Id': uid }
             })
             
@@ -48,8 +49,8 @@ function Templates() {
         
         try {
             const url = currentTemplate.id 
-                ? `/api/templates/${currentTemplate.id}`
-                : '/api/templates'
+                ? apiUrl(`/api/templates/${currentTemplate.id}`)
+                : apiUrl('/api/templates')
             
             const method = currentTemplate.id ? 'PUT' : 'POST'
             
@@ -94,7 +95,7 @@ function Templates() {
         if (!confirm('Are you sure you want to delete this template?')) return
         
         try {
-            const response = await fetch(`/api/templates/${templateId}`, {
+            const response = await fetch(apiUrl(`/api/templates/${templateId}`), {
                 method: 'DELETE',
                 headers: { 'X-User-Id': userId }
             })

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { apiUrl } from '../utils/api'
 import './Settings.css'
 
 function Settings() {
@@ -33,7 +34,7 @@ function Settings() {
 
   const loadCalendarStatus = async (uid) => {
     try {
-      const response = await fetch('/api/calendar/status', {
+      const response = await fetch(apiUrl('/api/calendar/status'), {
         headers: { 'X-User-Id': uid }
       })
       if (response.ok) {
@@ -50,7 +51,7 @@ function Settings() {
 
   const loadEventTypes = async (uid) => {
     try {
-      const response = await fetch('/api/calendar/event-types', {
+      const response = await fetch(apiUrl('/api/calendar/event-types'), {
         headers: { 'X-User-Id': uid }
       })
       if (response.ok) {
@@ -81,7 +82,7 @@ function Settings() {
 
     try {
       // Test by trying to connect (we'll disconnect if it works)
-      const response = await fetch('/api/calendar/connect', {
+      const response = await fetch(apiUrl('/api/calendar/connect'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -116,7 +117,7 @@ function Settings() {
     setSuccess(null)
 
     try {
-      const response = await fetch('/api/calendar/connect', {
+      const response = await fetch(apiUrl('/api/calendar/connect'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -156,7 +157,7 @@ function Settings() {
 
     try {
       const eventType = eventTypes.find(et => et.id === selectedEventType)
-      const response = await fetch('/api/calendar/event-type', {
+      const response = await fetch(apiUrl('/api/calendar/event-type'), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -191,7 +192,7 @@ function Settings() {
 
     setLoading(true)
     try {
-      const response = await fetch('/api/calendar/disconnect', {
+      const response = await fetch(apiUrl('/api/calendar/disconnect'), {
         method: 'DELETE',
         headers: { 'X-User-Id': userId }
       })

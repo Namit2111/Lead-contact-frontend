@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import ProviderList from '../components/ProviderList'
+import { apiUrl } from '../utils/api'
 import '../App.css'
 
 function Home() {
@@ -13,7 +14,7 @@ function Home() {
 
   const fetchProviders = async () => {
     try {
-      const response = await fetch('/api/providers')
+      const response = await fetch(apiUrl('/api/providers'))
       const data = await response.json()
       setProviders(data)
     } catch (err) {
@@ -27,7 +28,7 @@ function Home() {
     setError(null)
     
     try {
-      const response = await fetch(`/api/auth/${provider}/url?state=${provider}`)
+      const response = await fetch(apiUrl(`/api/auth/${provider}/url?state=${provider}`))
       const data = await response.json()
       
       if (response.ok) {

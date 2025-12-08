@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { apiUrl } from '../utils/api'
 import '../App.css'
 
 function Callback() {
@@ -33,7 +34,7 @@ function Callback() {
 
     try {
       console.log('Calling backend callback API...')
-      const response = await fetch(`/api/oauth/callback/${provider}?code=${code}`)
+      const response = await fetch(apiUrl(`/api/oauth/callback/${provider}?code=${code}`))
       const data = await response.json()
 
       console.log('Response status:', response.status)

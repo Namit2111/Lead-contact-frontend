@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import CsvUpload from '../components/CsvUpload'
 import ContactModal from '../components/ContactModal'
+import { apiUrl } from '../utils/api'
 import './Contacts.css'
 
 function Contacts() {
@@ -52,7 +53,7 @@ function Contacts() {
     setError(null)
 
     try {
-      const response = await fetch('/api/contacts/uploads', {
+      const response = await fetch(apiUrl('/api/contacts/uploads'), {
         headers: {
           'X-User-Id': uid
         }
@@ -96,7 +97,7 @@ function Contacts() {
     }
 
     try {
-      const response = await fetch(`/api/contacts/by-source/${encodeURIComponent(source)}`, {
+      const response = await fetch(apiUrl(`/api/contacts/by-source/${encodeURIComponent(source)}`), {
         method: 'DELETE',
         headers: {
           'X-User-Id': userId

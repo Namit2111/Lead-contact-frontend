@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import PromptModal from '../components/PromptModal'
+import { apiUrl } from '../utils/api'
 import './Prompts.css'
 
 function Prompts() {
@@ -37,7 +38,7 @@ function Prompts() {
     setError(null)
 
     try {
-      const response = await fetch('/api/prompts', {
+      const response = await fetch(apiUrl('/api/prompts'), {
         headers: { 'X-User-Id': uid }
       })
 
@@ -57,7 +58,7 @@ function Prompts() {
 
   const loadSystemDefault = async () => {
     try {
-      const response = await fetch('/api/prompts/system-default')
+      const response = await fetch(apiUrl('/api/prompts/system-default'))
       if (response.ok) {
         const data = await response.json()
         setSystemDefault(data)
@@ -83,7 +84,7 @@ function Prompts() {
     }
 
     try {
-      const response = await fetch(`/api/prompts/${promptId}`, {
+      const response = await fetch(apiUrl(`/api/prompts/${promptId}`), {
         method: 'DELETE',
         headers: { 'X-User-Id': userId }
       })
@@ -101,7 +102,7 @@ function Prompts() {
 
   const handleSetDefault = async (promptId) => {
     try {
-      const response = await fetch(`/api/prompts/${promptId}/set-default`, {
+      const response = await fetch(apiUrl(`/api/prompts/${promptId}/set-default`), {
         method: 'POST',
         headers: { 'X-User-Id': userId }
       })

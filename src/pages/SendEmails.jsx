@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { apiUrl } from '../utils/api'
 
 function SendEmails() {
     const [step, setStep] = useState(1)
@@ -26,7 +27,7 @@ function SendEmails() {
     const loadData = async (uid) => {
         try {
             // Load CSV uploads
-            const csvResponse = await fetch('/api/contacts/uploads', {
+            const csvResponse = await fetch(apiUrl('/api/contacts/uploads'), {
                 headers: { 'X-User-Id': uid }
             })
             if (csvResponse.ok) {
@@ -35,7 +36,7 @@ function SendEmails() {
             }
 
             // Load templates
-            const templateResponse = await fetch('/api/templates', {
+            const templateResponse = await fetch(apiUrl('/api/templates'), {
                 headers: { 'X-User-Id': uid }
             })
             if (templateResponse.ok) {
@@ -44,7 +45,7 @@ function SendEmails() {
             }
 
             // Load prompts
-            const promptResponse = await fetch('/api/prompts', {
+            const promptResponse = await fetch(apiUrl('/api/prompts'), {
                 headers: { 'X-User-Id': uid }
             })
             if (promptResponse.ok) {
@@ -66,7 +67,7 @@ function SendEmails() {
 
         setLoading(true)
         try {
-            const response = await fetch('/api/campaigns/preview', {
+            const response = await fetch(apiUrl('/api/campaigns/preview'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -106,7 +107,7 @@ function SendEmails() {
 
         setSending(true)
         try {
-            const response = await fetch('/api/campaigns/send', {
+            const response = await fetch(apiUrl('/api/campaigns/send'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

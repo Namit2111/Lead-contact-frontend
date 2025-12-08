@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation, useParams } from 'react-router-dom'
+import { apiUrl } from '../utils/api'
 import './CampaignDetail.css'
 
 function CampaignDetail() {
@@ -57,7 +58,7 @@ function CampaignDetail() {
 
   const loadPrompts = async () => {
     try {
-      const response = await fetch('/api/prompts', {
+      const response = await fetch(apiUrl('/api/prompts'), {
         headers: { 'X-User-Id': userId }
       })
       if (response.ok) {
@@ -77,7 +78,7 @@ function CampaignDetail() {
 
   const loadCampaign = async () => {
     try {
-      const response = await fetch(`/api/campaigns/${campaignId}`, {
+      const response = await fetch(apiUrl(`/api/campaigns/${campaignId}`), {
         headers: { 'X-User-Id': userId }
       })
 
@@ -107,7 +108,7 @@ function CampaignDetail() {
     setEmailsLoading(true)
     try {
       const response = await fetch(
-        `/api/campaigns/${campaignId}/emails?page=${page}&page_size=${pageSize}`,
+        apiUrl(`/api/campaigns/${campaignId}/emails?page=${page}&page_size=${pageSize}`),
         { headers: { 'X-User-Id': userId } }
       )
 
@@ -133,7 +134,7 @@ function CampaignDetail() {
     setConversationsLoading(true)
     try {
       const response = await fetch(
-        `/api/campaigns/${campaignId}/conversations`,
+        apiUrl(`/api/campaigns/${campaignId}/conversations`),
         { headers: { 'X-User-Id': userId } }
       )
 
@@ -152,7 +153,7 @@ function CampaignDetail() {
     setMessagesLoading(true)
     try {
       const response = await fetch(
-        `/api/campaigns/${campaignId}/conversations/${conversationId}`,
+        apiUrl(`/api/campaigns/${campaignId}/conversations/${conversationId}`),
         { headers: { 'X-User-Id': userId } }
       )
 

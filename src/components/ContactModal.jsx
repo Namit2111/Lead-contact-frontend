@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { apiUrl } from '../utils/api'
 import './ContactModal.css'
 
 function ContactModal({ isOpen, onClose, csvSource, userId }) {
@@ -21,7 +22,7 @@ function ContactModal({ isOpen, onClose, csvSource, userId }) {
 
     try {
       const response = await fetch(
-        `/api/contacts/by-source/${encodeURIComponent(csvSource)}?page=${page}&page_size=${pageSize}`,
+        apiUrl(`/api/contacts/by-source/${encodeURIComponent(csvSource)}?page=${page}&page_size=${pageSize}`),
         {
           headers: {
             'X-User-Id': userId
