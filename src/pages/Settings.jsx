@@ -11,8 +11,10 @@ function Settings() {
   const [eventTypes, setEventTypes] = useState([])
   const [apiKey, setApiKey] = useState('')
   const [selectedEventType, setSelectedEventType] = useState(null)
+  const [calToolsEnabled, setCalToolsEnabled] = useState(true)
   const [loading, setLoading] = useState(false)
   const [testing, setTesting] = useState(false)
+  const [togglingTools, setTogglingTools] = useState(false)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
 
@@ -41,6 +43,7 @@ function Settings() {
         const data = await response.json()
         setCalendarStatus(data)
         if (data.connected) {
+          setCalToolsEnabled(data.cal_tools_enabled !== false)
           loadEventTypes(uid)
         }
       }
@@ -212,6 +215,36 @@ function Settings() {
     }
   }
 
+  const handleToggleCalTools = async () => {
+    const newValue = !calToolsEnabled
+    setTogglingTools(true)
+    setError(null)
+
+    try {
+      const response = await fetch(apiUrl('/api/calendar/toggle-tools'), {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-User-Id': userId
+        },
+        body: JSON.stringify({ enabled: newValue })
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setCalToolsEnabled(data.cal_tools_enabled)
+        setSuccess(`AI calendar tools ${newValue ? 'enabled' : 'disabled'}`)
+      } else {
+        const data = await response.json()
+        setError(data.detail || 'Failed to toggle calendar tools')
+      }
+    } catch (err) {
+      setError('Failed to toggle calendar tools')
+    } finally {
+      setTogglingTools(false)
+    }
+  }
+
   return (
     <div className="settings-page">
       <div className="page-header">
@@ -292,6 +325,27 @@ function Settings() {
             <div className="connected-info">
               <p><strong>Username:</strong> {calendarStatus.username}</p>
               <p><strong>Event Type:</strong> {calendarStatus.event_type_name || 'Not selected'}</p>
+            </div>
+
+            {/* AI Calendar Tools Toggle */}
+            <div className="toggle-section" style={{ marginTop: '24px' }}>
+              <div className="toggle-row">
+                <div className="toggle-info">
+                  <label className="toggle-label">AI Calendar Tools</label>
+                  <p className="toggle-description">
+                    When enabled, the AI can check your availability and book meetings on your behalf during email conversations.
+                  </p>
+                </div>
+                <label className="toggle-switch">
+                  <input
+                    type="checkbox"
+                    checked={calToolsEnabled}
+                    onChange={handleToggleCalTools}
+                    disabled={togglingTools}
+                  />
+                  <span className="toggle-slider"></span>
+                </label>
+              </div>
             </div>
 
             {eventTypes.length > 0 && (

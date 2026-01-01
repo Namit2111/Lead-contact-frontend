@@ -27,6 +27,9 @@ function Layout() {
                     <Link to="/prompts" className={`nav-item ${isActive('/prompts')}`}>
                         AI Prompts
                     </Link>
+                    <Link to="/playground" className={`nav-item ${isActive('/playground')}`}>
+                        AI Playground
+                    </Link>
                     <Link to="/send" className={`nav-item ${isActive('/send')}`}>
                         Send Emails
                     </Link>

@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard'
 import Contacts from './pages/Contacts'
 import Templates from './pages/Templates'
 import Prompts from './pages/Prompts'
+import AIPlayground from './pages/AIPlayground'
 import SendEmails from './pages/SendEmails'
 import Campaigns from './pages/Campaigns'
 import CampaignDetail from './pages/CampaignDetail'
@@ -27,6 +28,7 @@ function App() {
           <Route path="/contacts" element={<Contacts />} />
           <Route path="/templates" element={<Templates />} />
           <Route path="/prompts" element={<Prompts />} />
+          <Route path="/playground" element={<AIPlayground />} />
           <Route path="/send" element={<SendEmails />} />
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/campaigns/:campaignId" element={<CampaignDetail />} />

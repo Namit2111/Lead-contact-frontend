@@ -325,6 +325,58 @@
   box-shadow: var(--shadow-soft);
 }
 
+/* Test Prompts CTA */
+.test-prompts-cta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-lg);
+  padding: 24px 32px;
+  margin-top: 32px;
+}
+
+.cta-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cta-icon {
+  font-size: 2rem;
+}
+
+.cta-content h4 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-neutral);
+}
+
+.cta-content p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.cta-button {
+  padding: 12px 24px;
+  background: var(--color-accent-green);
+  color: var(--color-white);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.cta-button:hover {
+  background: #15803d;
+  transform: translateY(-1px);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .prompts-grid {
@@ -338,5 +390,14 @@
   .action-btn {
     width: 100%;
     text-align: center;
+  }
+
+  .prompt-test-container {
+    max-height: 85vh;
+  }
+
+  .system-default-header {
+    flex-direction: column;
+    gap: 16px;
   }
 }

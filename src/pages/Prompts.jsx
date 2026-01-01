@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import PromptModal from '../components/PromptModal'
 import { apiUrl } from '../utils/api'
 import './Prompts.css'
@@ -247,6 +247,20 @@ function Prompts() {
           </div>
         </div>
       )}
+
+      {/* Test Prompts Link */}
+      <div className="test-prompts-cta">
+        <div className="cta-content">
+          <span className="cta-icon">🧪</span>
+          <div>
+            <h4>Test Your Prompts</h4>
+            <p>Use the AI Playground to test how your prompts respond to different messages</p>
+          </div>
+        </div>
+        <Link to="/playground" className="cta-button">
+          Open AI Playground →
+        </Link>
+      </div>
 
       {/* Modal */}
       {showModal && (
