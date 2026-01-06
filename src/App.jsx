@@ -12,6 +12,8 @@ import Campaigns from './pages/Campaigns'
 import CampaignDetail from './pages/CampaignDetail'
 import Logs from './pages/Logs'
 import Settings from './pages/Settings'
+import DesignSystemDemo from './pages/DesignSystemDemo'
+import './styles/design-system.css'
 import './App.css'
 
 function App() {
@@ -34,6 +36,7 @@ function App() {
           <Route path="/campaigns/:campaignId" element={<CampaignDetail />} />
           <Route path="/logs" element={<Logs />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/design-system" element={<DesignSystemDemo />} />
         </Route>
       </Routes>
     </Router>

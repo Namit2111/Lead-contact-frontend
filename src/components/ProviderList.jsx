@@ -1,3 +1,4 @@
+import { Button } from './common'
 import './ProviderList.css'
 
 const providerIcons = {
@@ -16,7 +17,7 @@ function ProviderList({ providers, onConnect, loading }) {
   if (providers.length === 0) {
     return (
       <div className="provider-empty">
-        <p>No providers available</p>
+        <p className="text-body-secondary">No providers available</p>
       </div>
     )
   }
@@ -29,16 +30,16 @@ function ProviderList({ providers, onConnect, loading }) {
             {providerIcons[provider] || provider.charAt(0).toUpperCase()}
           </div>
           <div className="provider-info">
-            <h3>{providerNames[provider] || provider.charAt(0).toUpperCase() + provider.slice(1)}</h3>
-            <p>Connect your {provider} account to continue</p>
+            <h3 className="text-h3">{providerNames[provider] || provider.charAt(0).toUpperCase() + provider.slice(1)}</h3>
+            <p className="text-body-secondary">Connect your {provider} account to continue</p>
           </div>
-          <button
+          <Button
             onClick={() => onConnect(provider)}
             disabled={loading}
-            className="connect-button"
+            loading={loading}
           >
             {loading ? 'Connecting...' : 'Connect'}
-          </button>
+          </Button>
         </div>
       ))}
     </div>

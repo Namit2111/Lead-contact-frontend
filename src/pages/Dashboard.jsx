@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { Card } from '../components/common'
 import { apiUrl } from '../utils/api'
 
 function Dashboard() {
@@ -68,35 +69,55 @@ function Dashboard() {
     return (
         <div className="dashboard-page">
             <div className="page-header">
-                <h1 className="page-title">Dashboard</h1>
-                <p className="page-subtitle">Welcome back, {user?.name || 'User'}</p>
+                <h1 className="text-h1">Dashboard</h1>
+                <p className="text-body-secondary">Welcome back, {user?.name || 'User'}</p>
             </div>
 
-            <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
-                <div className="card stat-card">
-                    <h3>Total Contacts</h3>
-                    <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: '600', color: 'var(--color-text-neutral)', marginTop: '12px' }}>
+            <div className="stats-grid" style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                gap: 'var(--spacing-lg)'
+            }}>
+                <Card className="stat-card">
+                    <h3 className="text-h3 mb-md">Total Contacts</h3>
+                    <div className="stat-value text-h1" style={{
+                        fontWeight: 'var(--font-weight-semibold)',
+                        color: 'var(--color-brand-primary)',
+                        marginTop: 'var(--spacing-sm)'
+                    }}>
                         {stats.total_contacts}
                     </div>
-                </div>
-                <div className="card stat-card">
-                    <h3>CSV Uploads</h3>
-                    <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: '600', color: 'var(--color-text-neutral)', marginTop: '12px' }}>
+                </Card>
+                <Card className="stat-card">
+                    <h3 className="text-h3 mb-md">CSV Uploads</h3>
+                    <div className="stat-value text-h1" style={{
+                        fontWeight: 'var(--font-weight-semibold)',
+                        color: 'var(--color-brand-primary)',
+                        marginTop: 'var(--spacing-sm)'
+                    }}>
                         {stats.csv_uploads}
                     </div>
-                </div>
-                <div className="card stat-card">
-                    <h3>Templates</h3>
-                    <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: '600', color: 'var(--color-text-neutral)', marginTop: '12px' }}>
+                </Card>
+                <Card className="stat-card">
+                    <h3 className="text-h3 mb-md">Templates</h3>
+                    <div className="stat-value text-h1" style={{
+                        fontWeight: 'var(--font-weight-semibold)',
+                        color: 'var(--color-brand-primary)',
+                        marginTop: 'var(--spacing-sm)'
+                    }}>
                         {stats.total_templates}
                     </div>
-                </div>
-                <div className="card stat-card">
-                    <h3>Emails Sent</h3>
-                    <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: '600', color: 'var(--color-text-neutral)', marginTop: '12px' }}>
+                </Card>
+                <Card className="stat-card">
+                    <h3 className="text-h3 mb-md">Emails Sent</h3>
+                    <div className="stat-value text-h1" style={{
+                        fontWeight: 'var(--font-weight-semibold)',
+                        color: 'var(--color-brand-primary)',
+                        marginTop: 'var(--spacing-sm)'
+                    }}>
                         {stats.emails_sent}
                     </div>
-                </div>
+                </Card>
             </div>
         </div>
     )

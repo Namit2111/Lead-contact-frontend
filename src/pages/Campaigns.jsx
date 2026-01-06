@@ -54,10 +54,13 @@ function Campaigns() {
 
       if (response.ok) {
         const data = await response.json()
-        setCampaigns(data.campaigns)
-        setFilteredCampaigns(data.campaigns)
+        console.log('Campaigns loaded:', data)
+        setCampaigns(data.campaigns || [])
+        setFilteredCampaigns(data.campaigns || [])
       } else {
-        setError('Failed to load campaigns')
+        const errorData = await response.json().catch(() => ({ detail: 'Failed to load campaigns' }))
+        console.error('Failed to load campaigns:', errorData)
+        setError(errorData.detail || 'Failed to load campaigns')
       }
     } catch (err) {
       console.error('Error loading campaigns:', err)

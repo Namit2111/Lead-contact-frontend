@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Button, Card, Input, Textarea } from '../components/common'
 import { apiUrl } from '../utils/api'
 
 function Templates() {
@@ -135,104 +136,64 @@ function Templates() {
                     <p className="page-subtitle">Create and manage email templates</p>
                 </div>
                 {!isEditing && (
-                    <button
-                        className="pagination-btn"
-                        onClick={() => setIsEditing(true)}
-                        style={{ padding: '12px 24px' }}
-                    >
+                    <Button onClick={() => setIsEditing(true)}>
                         Create Template
-                    </button>
+                    </Button>
                 )}
             </div>
 
             {error && (
-                <div style={{ padding: '12px', background: 'var(--color-bg-warm)', border: '1px solid var(--color-border)', borderRadius: '6px', marginBottom: '16px', color: 'var(--color-text-neutral)' }}>
+                <div style={{ padding: 'var(--spacing-sm)', background: 'rgba(220, 38, 38, 0.1)', border: '1px solid rgba(220, 38, 38, 0.2)', borderRadius: '8px', marginBottom: 'var(--spacing-md)', color: 'var(--color-semantic-error)' }}>
                     {error}
                 </div>
             )}
 
             {isEditing ? (
-                <div className="card">
-                    <h3>{currentTemplate.id ? 'Edit Template' : 'New Template'}</h3>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '24px' }}>
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', fontSize: '14px', color: 'var(--color-text-neutral)' }}>Template Name</label>
-                            <input
-                                type="text"
-                                value={currentTemplate.name}
-                                onChange={(e) => setCurrentTemplate({ ...currentTemplate, name: e.target.value })}
-                                style={{
-                                    width: '100%',
-                                    padding: '12px',
-                                    borderRadius: '6px',
-                                    border: '1px solid var(--color-border)',
-                                    fontSize: '14px',
-                                    fontFamily: 'inherit'
-                                }}
-                                placeholder="e.g., Welcome Email"
-                            />
-                        </div>
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', fontSize: '14px', color: 'var(--color-text-neutral)' }}>Subject Line</label>
-                            <input
-                                type="text"
-                                value={currentTemplate.subject}
-                                onChange={(e) => setCurrentTemplate({ ...currentTemplate, subject: e.target.value })}
-                                style={{
-                                    width: '100%',
-                                    padding: '12px',
-                                    borderRadius: '6px',
-                                    border: '1px solid var(--color-border)',
-                                    fontSize: '14px',
-                                    fontFamily: 'inherit'
-                                }}
-                                placeholder="e.g., Welcome to our service!"
-                            />
-                        </div>
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', fontSize: '14px', color: 'var(--color-text-neutral)' }}>Email Body</label>
-                            <textarea
-                                value={currentTemplate.body}
-                                onChange={(e) => setCurrentTemplate({ ...currentTemplate, body: e.target.value })}
-                                style={{
-                                    width: '100%',
-                                    minHeight: '200px',
-                                    padding: '12px',
-                                    borderRadius: '6px',
-                                    border: '1px solid var(--color-border)',
-                                    fontFamily: 'inherit',
-                                    fontSize: '14px',
-                                    resize: 'vertical'
-                                }}
-                                placeholder="Hello {{name}}, ..."
-                            />
-                            <p style={{ fontSize: '13px', color: 'var(--color-text-secondary)', marginTop: '8px' }}>
-                                Use <code style={{ background: 'var(--color-bg-warm)', padding: '2px 6px', borderRadius: '3px' }}>{`{{variable}}`}</code> to insert dynamic content.
-                            </p>
-                        </div>
-                        <div style={{ display: 'flex', gap: '12px', marginTop: '12px', paddingTop: '20px', borderTop: '1px solid var(--color-border)' }}>
-                            <button
+                <Card>
+                    <h3 className="text-h3 mb-lg">{currentTemplate.id ? 'Edit Template' : 'New Template'}</h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-lg)', marginTop: 'var(--spacing-lg)' }}>
+                        <Input
+                            label="Template Name"
+                            value={currentTemplate.name}
+                            onChange={(e) => setCurrentTemplate({ ...currentTemplate, name: e.target.value })}
+                            placeholder="e.g., Welcome Email"
+                        />
+                        <Input
+                            label="Subject Line"
+                            value={currentTemplate.subject}
+                            onChange={(e) => setCurrentTemplate({ ...currentTemplate, subject: e.target.value })}
+                            placeholder="e.g., Welcome to our service!"
+                        />
+                        <Textarea
+                            label="Email Body"
+                            value={currentTemplate.body}
+                            onChange={(e) => setCurrentTemplate({ ...currentTemplate, body: e.target.value })}
+                            rows={8}
+                            placeholder="Hello {{name}}, ..."
+                        />
+                        <p style={{ fontSize: 'var(--font-size-small)', color: 'var(--color-neutral-text-secondary)', marginTop: 'var(--spacing-xs)' }}>
+                            Use <code style={{ background: 'var(--color-neutral-background)', padding: '2px 6px', borderRadius: '3px' }}>{`{{variable}}`}</code> to insert dynamic content.
+                        </p>
+                        <div style={{ display: 'flex', gap: 'var(--spacing-sm)', marginTop: 'var(--spacing-sm)', paddingTop: 'var(--spacing-lg)', borderTop: '1px solid var(--color-neutral-border)' }}>
+                            <Button
                                 onClick={handleSave}
-                                className="pagination-btn"
-                                style={{ padding: '12px 24px' }}
                                 disabled={!currentTemplate.name || !currentTemplate.subject || !currentTemplate.body}
                             >
                                 {currentTemplate.id ? 'Update Template' : 'Save Template'}
-                            </button>
-                            <button
+                            </Button>
+                            <Button
+                                variant="secondary"
                                 onClick={handleCancel}
-                                className="btn-secondary"
-                                style={{ padding: '12px 24px' }}
                             >
                                 Cancel
-                            </button>
+                            </Button>
                         </div>
                     </div>
-                </div>
+                </Card>
             ) : (
-                <div className="card">
+                <Card>
                     {templates.length === 0 ? (
-                        <p style={{ color: 'var(--color-text-secondary)', fontStyle: 'italic', textAlign: 'center', padding: '40px' }}>
+                        <p style={{ color: 'var(--color-neutral-text-secondary)', fontStyle: 'italic', textAlign: 'center', padding: 'var(--spacing-xl)' }}>
                             No templates created yet. Click "Create Template" to get started.
                         </p>
                     ) : (
@@ -251,19 +212,22 @@ function Templates() {
                                             <td>{t.name}</td>
                                             <td className="date-cell">{new Date(t.created_at).toLocaleDateString()}</td>
                                             <td>
-                                                <button 
-                                                    className="delete-btn" 
-                                                    style={{ marginRight: '8px' }}
-                                                    onClick={() => handleEdit(t)}
-                                                >
-                                                    Edit
-                                                </button>
-                                                <button 
-                                                    className="delete-btn"
-                                                    onClick={() => handleDelete(t.id)}
-                                                >
-                                                    Delete
-                                                </button>
+                                                <div style={{ display: 'flex', gap: 'var(--spacing-sm)' }}>
+                                                    <Button
+                                                        variant="secondary"
+                                                        size="sm"
+                                                        onClick={() => handleEdit(t)}
+                                                    >
+                                                        Edit
+                                                    </Button>
+                                                    <Button
+                                                        variant="error"
+                                                        size="sm"
+                                                        onClick={() => handleDelete(t.id)}
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}
@@ -271,7 +235,7 @@ function Templates() {
                             </table>
                         </div>
                     )}
-                </div>
+                </Card>
             )}
         </div>
     )

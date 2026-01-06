@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { apiUrl } from '../utils/api'
 
 function Logs() {
     const [logs, setLogs] = useState([])
@@ -25,16 +26,19 @@ function Logs() {
         setError(null)
 
         try {
-            const response = await fetch(`/api/campaigns/logs?page=${currentPage}&page_size=${pageSize}`, {
+            const response = await fetch(apiUrl(`/api/campaigns/logs?page=${currentPage}&page_size=${pageSize}`), {
                 headers: { 'X-User-Id': uid }
             })
 
             if (response.ok) {
                 const data = await response.json()
-                setLogs(data.logs)
-                setTotal(data.total)
+                console.log('Logs loaded:', data)
+                setLogs(data.logs || [])
+                setTotal(data.total || 0)
             } else {
-                setError('Failed to load logs')
+                const errorData = await response.json().catch(() => ({ detail: 'Failed to load logs' }))
+                console.error('Failed to load logs:', errorData)
+                setError(errorData.detail || 'Failed to load logs')
             }
         } catch (err) {
             console.error('Error loading logs:', err)
@@ -61,18 +65,18 @@ function Logs() {
 
     const getStatusBadge = (status) => {
         const styles = {
-            sent: { background: 'var(--color-success-bg)', color: 'var(--color-success)', border: '1px solid var(--color-success-bg)' },
-            failed: { background: 'var(--color-error-bg)', color: 'var(--color-error)', border: '1px solid var(--color-error-bg)' },
-            pending: { background: 'var(--color-bg-warm)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)' }
+            sent: { background: 'rgba(22, 163, 74, 0.1)', color: 'var(--color-semantic-success)', border: '1px solid rgba(22, 163, 74, 0.2)' },
+            failed: { background: 'rgba(220, 38, 38, 0.1)', color: 'var(--color-semantic-error)', border: '1px solid rgba(220, 38, 38, 0.2)' },
+            pending: { background: 'var(--color-neutral-background)', color: 'var(--color-neutral-text-secondary)', border: '1px solid var(--color-neutral-border)' }
         }
         const style = styles[status] || styles.pending
         return (
             <span style={{
                 ...style,
-                padding: '4px 12px',
+                padding: 'var(--spacing-xs) var(--spacing-sm)',
                 borderRadius: '12px',
-                fontSize: '13px',
-                fontWeight: '500'
+                fontSize: 'var(--font-size-small)',
+                fontWeight: 'var(--font-weight-medium)'
             }}>
                 {status.charAt(0).toUpperCase() + status.slice(1)}
             </span>
@@ -98,14 +102,14 @@ function Logs() {
             </div>
 
             {error && (
-                <div style={{ padding: '12px', background: 'var(--color-bg-warm)', border: '1px solid var(--color-border)', borderRadius: '6px', marginBottom: '16px', color: 'var(--color-text-neutral)' }}>
+                <div style={{ padding: 'var(--spacing-sm)', background: 'rgba(220, 38, 38, 0.1)', border: '1px solid rgba(220, 38, 38, 0.2)', borderRadius: '8px', marginBottom: 'var(--spacing-md)', color: 'var(--color-semantic-error)' }}>
                     {error}
                 </div>
             )}
 
             <div className="card">
                 {logs.length === 0 ? (
-                    <p style={{ color: 'var(--color-text-secondary)', fontStyle: 'italic', textAlign: 'center', padding: '40px' }}>
+                    <p style={{ color: 'var(--color-neutral-text-secondary)', fontStyle: 'italic', textAlign: 'center', padding: 'var(--spacing-xl)' }}>
                         No email logs yet. Send your first campaign to see logs here.
                     </p>
                 ) : (
@@ -137,8 +141,8 @@ function Logs() {
 
                         {/* Pagination */}
                         {total > pageSize && (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '24px', paddingTop: '24px', borderTop: '1px solid var(--color-border)' }}>
-                                <div style={{ fontSize: '14px', color: 'var(--color-text-secondary)' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'var(--spacing-lg)', paddingTop: 'var(--spacing-lg)', borderTop: '1px solid var(--color-neutral-border)' }}>
+                                <div style={{ fontSize: 'var(--font-size-body)', color: 'var(--color-neutral-text-secondary)' }}>
                                     Showing {(page - 1) * pageSize + 1} - {Math.min(page * pageSize, total)} of {total}
                                 </div>
                                 <div style={{ display: 'flex', gap: '12px' }}>

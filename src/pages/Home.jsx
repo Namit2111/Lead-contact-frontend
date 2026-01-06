@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import ProviderList from '../components/ProviderList'
+import { Button, Card } from '../components/common'
 import { apiUrl } from '../utils/api'
 import '../App.css'
 
@@ -47,30 +48,37 @@ function Home() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Lead Contact</h1>
-        <p>Email Campaign Management Platform</p>
+        <h1 className="text-h1">Lead Contact</h1>
+        <p className="text-body-secondary">Email Campaign Management Platform</p>
       </header>
 
       <main className="app-content">
-        <div className="connect-container">
-          <h2 className="connect-title">Connect Your Account</h2>
-          <p className="connect-subtitle">
+        <Card className="connect-container">
+          <h2 className="text-h2 mb-lg">Connect Your Account</h2>
+          <p className="text-body-secondary mb-xl">
             Choose a provider below to connect your account and start managing your email campaigns
           </p>
 
           {error && (
-            <div className="alert">
+            <div className="alert mb-lg">
               <span>{error}</span>
-              <button onClick={() => setError(null)}>✕</button>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setError(null)}
+                style={{ marginLeft: 'auto' }}
+              >
+                ✕
+              </Button>
             </div>
           )}
 
-          <ProviderList 
+          <ProviderList
             providers={providers}
             onConnect={handleConnect}
             loading={loading}
           />
-        </div>
+        </Card>
       </main>
     </div>
   )

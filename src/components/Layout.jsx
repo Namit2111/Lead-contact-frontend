@@ -42,6 +42,9 @@ function Layout() {
                     <Link to="/settings" className={`nav-item ${isActive('/settings')}`}>
                         Settings
                     </Link>
+                    <Link to="/design-system" className={`nav-item ${isActive('/design-system')}`}>
+                        Design System
+                    </Link>
                 </nav>
                 <div className="sidebar-footer">
                     <Link to="/" className="nav-item logout">

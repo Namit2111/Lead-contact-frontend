@@ -241,18 +241,67 @@ function Contacts() {
 
       {/* Upload Modal */}
       {showUploadModal && (
-        <div className="modal-overlay" onClick={() => setShowUploadModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2>Upload CSV File</h2>
+        <div className="modal-overlay" onClick={() => setShowUploadModal(false)} style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(15, 23, 42, 0.6)',
+          backdropFilter: 'blur(4px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000,
+          padding: 'var(--spacing-md)'
+        }}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{
+            background: 'var(--color-neutral-surface)',
+            borderRadius: '12px',
+            width: '100%',
+            maxWidth: '800px',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+            border: '1px solid var(--color-neutral-border)'
+          }}>
+            <div className="modal-header" style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: 'var(--spacing-lg) var(--spacing-xl)',
+              borderBottom: '1px solid var(--color-neutral-border)'
+            }}>
+              <h2 style={{
+                margin: 0,
+                fontSize: 'var(--font-size-h2)',
+                color: 'var(--color-neutral-text-primary)',
+                fontWeight: 'var(--font-weight-semibold)',
+                letterSpacing: '-0.5px'
+              }}>Upload CSV File</h2>
               <button
                 className="modal-close"
                 onClick={() => setShowUploadModal(false)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontSize: '24px',
+                  color: 'var(--color-neutral-text-muted)',
+                  cursor: 'pointer',
+                  padding: 0,
+                  width: '32px',
+                  height: '32px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '50%',
+                  transition: 'all 0.2s ease'
+                }}
               >
                 ×
               </button>
             </div>
-            <div className="modal-body">
+            <div className="modal-body" style={{ padding: 'var(--spacing-xl)' }}>
               {userId && (
                 <CsvUpload
                   userId={userId}
